@@ -1,0 +1,18 @@
+{
+  "name": "graphql-sample",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun --watch run src/index.ts"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.11.2",
+    "graphql": "^16.9.0"
+  }
+}

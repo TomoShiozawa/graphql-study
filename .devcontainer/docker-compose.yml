@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  application:
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
+    ports:
+      - 4000:4000
+    working_dir: /workspace
+    volumes:
+      - ../:/workspace
+    command: /bin/bash
+    tty: true
+    stdin_open: true
