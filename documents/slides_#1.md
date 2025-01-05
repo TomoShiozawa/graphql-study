@@ -19,7 +19,7 @@ paginate: true
 <!--
 _class: invert lead
 -->
-# GrapQL勉強会 #1
+# GraphQL勉強会 #1
 
 ### ~GraphQLのクエリを投げてみよう編~
 
