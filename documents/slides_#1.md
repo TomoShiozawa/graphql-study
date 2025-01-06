@@ -497,6 +497,39 @@ fragment liftInfo on Lift {
 <div class="container">
 <div class="col">
 
+項目名がそのままだと扱いづらいんですが...
+
+取得する時にエイリアスつけられます
+
+</div>
+<div class="col">
+
+```
+query {
+  openLiftCount: liftCount(status:OPEN)
+  openTrailCount: trailCount(status:OPEN)
+  openLifts: allLifts(status: OPEN) {
+    name
+    status
+  }
+  openTrails: allTrails(status: OPEN) {
+    name
+    difficulty
+    status
+  }
+}
+```
+
+</div>
+</div>
+
+---
+
+# GraphQLへのリクエスト
+
+<div class="container">
+<div class="col">
+
 データ更新はどうすんの？
 
 今までは`query`で操作してましたが、
@@ -640,8 +673,6 @@ JSONレスポンスは返ってきますが、
 - 大規模なものじゃないと恩恵が分かりにくいかも
   - 小規模ならRESTでも十分だし
   - Netflixとか、それぐらいの規模だと変わるのかな
-
-
 
 ---
 
