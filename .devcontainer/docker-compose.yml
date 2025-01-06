@@ -9,6 +9,10 @@ services:
     working_dir: /workspace
     volumes:
       - ../:/workspace
+      - app-node-modules:/workspace/node_modules
     command: /bin/bash
     tty: true
     stdin_open: true
+
+volumes:
+  app-node-modules:

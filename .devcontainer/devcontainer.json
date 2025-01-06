@@ -8,10 +8,16 @@
   },
   "customizations": {
     "vscode": {
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "biomejs.biome"
+      },
       "extensions": [
         "yoavbls.pretty-ts-errors",
         "ms-vscode.vscode-typescript-next",
-        "graphql.vscode-graphql-syntax"
+        "graphql.vscode-graphql-syntax",
+        "oven.bun-vscode",
+        "biomejs.biome"
       ]
     }
   }
