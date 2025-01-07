@@ -204,7 +204,7 @@ query {
 ```
 query {
   __type(name:"Lift") {
-  name
+    name
     fields {
       name
       description
@@ -392,7 +392,7 @@ query {
     elevationGain
     trailAccess {
       name
-   status
+      status
       difficulty
     }
   }
@@ -465,7 +465,7 @@ query {
   ...liftInfo
     trailAccess {
       name
-   status
+      status
       difficulty
     }
   }
@@ -522,6 +522,34 @@ query {
 
 </div>
 </div>
+
+---
+
+# GraphQLへのリクエスト
+
+<div class="container">
+<div class="col">
+
+OPENとCLOSEDで両方知りたいけど、
+フィールドが同じだから
+
+っていう時もエイリアスで別名にすれば大丈夫
+
+</div>
+<div class="col">
+
+```
+query {
+  openLiftCount: liftCount(status:OPEN)
+  closedLiftCount: liftCount(status:CLOSED)
+  openTrailCount: trailCount(status:OPEN)
+  closedTrailCount: trailCount(status:CLOSED)
+}
+```
+
+</div>
+</div>
+
 
 ---
 
