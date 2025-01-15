@@ -93,6 +93,8 @@ GraphQLのスキーマ定義って何で書くの？
 
 例えば必殺技の型定義をします
 
+この後の例は必ずその通りにやらなくても大丈夫です、各自好きなようにやってみてください
+
 </div>
 <div class="col">
 
@@ -173,7 +175,7 @@ type SpecialMove {
 
 ---
 
-# カスタスカラー型
+# カスタムスカラー型
 
 <div class="container">
 <div class="col">
@@ -192,7 +194,8 @@ type SpecialMove {
 <div class="col">
 
 ```graphql
-scalar
+scalar DateTime
+
 type SpecialMove {
   id: ID!
   name: String!
@@ -523,6 +526,136 @@ type SpecialAbility implements SpecialMove {
   usedBy: [Character!]!
   description: String
   condition: String
+}
+```
+
+</div>
+</div>
+
+---
+
+# 引数
+
+<div class="container">
+<div class="col">
+
+特定の必殺技だけ取得したい
+
+という時は引数を使うと良い
+
+引数にも型定義が必要
+
+</div>
+<div class="col">
+
+```graphql
+type Query {
+  allCharacters: [Character!]!
+  allSpecialMoves: [SpecialMove!]!
+  character(id: ID!): Character!
+  specialMove(id: ID!): SpecialMove!
+}
+```
+
+</div>
+</div>
+
+---
+
+# 引数
+
+<div class="container">
+<div class="col">
+
+打撃系の必殺技だけでフィルタリングしたい
+
+みたいな時も引数が使える
+必須ではない引数として定義
+
+</div>
+<div class="col">
+
+```graphql
+type Query {
+  allCharacters: [Character!]!
+  allSpecialMoves(attackType: AttackType): [SpecialMove!]!
+  character(id: ID!): Character!
+  specialMove(id: ID!): SpecialMove!
+}
+```
+
+こんなクエリになるイメージ
+
+```graphql
+query {
+  allSpecialMoves(attackType: BLOW) {
+    name
+    power
+  }
+}
+```
+
+</div>
+</div>
+
+---
+
+# 引数
+
+<div class="container">
+<div class="col">
+
+そのほか、ページングしたい、ソートしたい
+という時も引数で表現できます
+
+デフォルト値を設定することも可能
+
+</div>
+<div class="col">
+
+```graphql
+type Query {
+  allCharacters(first: Int = 10): [Character!]!
+  allSpecialMoves(
+    attackType: AttackType,
+    sort: Direction = DESC,
+    sortBy: SortField = power
+  ): [SpecialMove!]!
+  character(id: ID!): Character!
+  specialMove(id: ID!): SpecialMove!
+}
+```
+
+</div>
+</div>
+
+---
+
+# ミューテーション
+
+<div class="container">
+<div class="col">
+
+今度はミューテーションの定義をしてみる
+
+ユーザーができることを定義するのが良い
+
+</div>
+<div class="col">
+
+```graphql
+type Mutation {
+  postCharacter(name: String!): Character!
+  postSpecialMove(
+    name: String!
+    usedBy: [ID!]!
+    description: String
+  ): SpecialMove!
+}
+
+schema {
+  query: Query
+  mutation: Mutation
 }
 ```
 

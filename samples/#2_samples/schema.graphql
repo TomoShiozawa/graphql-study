@@ -8,22 +8,56 @@ type Character {
   id: ID!
   name: String!
   learnedSpecialMoves: [SpecialMove!]!
+  participatedShowdowns: [Showdown!]!
 }
 
-type SpecialMove {
+type Showdown {
+  location: String!
+  description: String
+  characters: [Character!]!
+  winners: [Character!]!
+}
+
+interface SpecialMove {
   id: ID!
   name: String!
-  power: Int!
-  description: String
-  attackType: AttackType!
   usedBy: [Character!]!
+  description: String
+}
+
+type EnergyWave implements SpecialMove {
+  id: ID!
+  name: String!
+  usedBy: [Character!]!
+  description: String
+  power: Int!
+}
+
+type SpecialAbility implements SpecialMove {
+  id: ID!
+  name: String!
+  usedBy: [Character!]!
+  description: String
+  condition: String
 }
 
 type Query {
   allCharacters: [Character!]!
   allSpecialMoves: [SpecialMove!]!
+  character(id: ID!): Character!
+  specialMove(id: ID!): SpecialMove!
+}
+
+type Mutation {
+  postCharacter(name: String!): Character!
+  postSpecialMove(
+    name: String!
+    usedBy: [ID!]!
+    description: String
+  ): SpecialMove!
 }
 
 schema {
   query: Query
+  mutation: Mutation
 }
