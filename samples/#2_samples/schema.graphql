@@ -1,0 +1,29 @@
+enum AttackType {
+  BLOW
+  LONG_DISTANCE
+  SUPERNATURAL
+}
+
+type Character {
+  id: ID!
+  name: String!
+  learnedSpecialMoves: [SpecialMove!]!
+}
+
+type SpecialMove {
+  id: ID!
+  name: String!
+  power: Int!
+  description: String
+  attackType: AttackType!
+  usedBy: [Character!]!
+}
+
+type Query {
+  allCharacters: [Character!]!
+  allSpecialMoves: [SpecialMove!]!
+}
+
+schema {
+  query: Query
+}
