@@ -34,15 +34,15 @@ _class: invert lead
 
 ---
 
-# スキーマファースト
+# 余談: スキーマファースト
 
 スキーマファーストという考え方
+
 - 開発者全員がデータ型について共通認識を持って開発してく
 - スキーマ(仕様)が先に決まっていて、それに合わせてコードができていく
 - バックエンドはスキーマに応じたデータを返すように実装
 - フロントエンドはスキーマに合わせたインターフェースを実装
 - みたいな世界観
-
 
 ---
 
@@ -85,30 +85,27 @@ GraphQLのスキーマ定義って何で書くの？
 # 実際に書き始めてみる
 
 <div class="container">
+<div class="col">
+スキーマ定義はテキストファイルとして記述できます
 
-  <div class="col">
-  スキーマ定義はテキストファイルとして記述できます
+拡張子は `.graphql` です
+（これは慣習らしい）
 
-  拡張子は `.graphql` です
-  （これは慣習らしい）
+例えば必殺技の型定義をします
 
-  例えば必殺技の型定義をします
+</div>
+<div class="col">
 
-  </div>
+```graphql
+type SpecialMove {
+  id: ID!
+  name: String!
+  power: Int!
+  description: String
+}
+```
 
-  <div class="col">
-
-  ```
-  type SpecialMove {
-    id: ID!
-    name: String!
-    power: Int!
-    description: String
-  }
-  ```
-
-
-  </div>
+</div>
 </div>
 
 ---
@@ -116,32 +113,30 @@ GraphQLのスキーマ定義って何で書くの？
 # 実際に書き始めてみる
 
 <div class="container">
+<div class="col">
+SpecialMove型の定義をしました
 
-  <div class="col">
-  SpecialMove型の定義をしました
+idという固有の識別子を持っています
 
-  idという固有の識別子を持っています
+また下記のフィールドを持ちます
 
-  また下記のフィールドを持ちます
-  - name: 技名
-  - power: 威力
-  - description: 説明
+- name: 技名
+- power: 威力
+- description: 説明
 
-  </div>
+</div>
+<div class="col">
 
-  <div class="col">
+```graphql
+type SpecialMove {
+  id: ID!
+  name: String!
+  power: Int!
+  description: String
+}
+```
 
-  ```
-  type SpecialMove {
-    id: ID!
-    name: String!
-    power: Int!
-    description: String
-  }
-  ```
-
-
-  </div>
+</div>
 </div>
 
 ---
@@ -149,34 +144,31 @@ GraphQLのスキーマ定義って何で書くの？
 # 実際に書き始めてみる
 
 <div class="container">
+<div class="col">
 
-  <div class="col">
+`!`でnullにならないことが
+示されます
 
-  `!`でnullにならないことが
-  示されます
+`name!`, `power!`には必ず値が入る
+`description`はnullになりうる
 
-  `name!`, `power!`には必ず値が入る
-  `description`はnullになりうる
+`id!` はID型の定義になる
 
-  `id!` はID型の定義になる
+ID型：JSONとしては文字列を返すが、値が重複しないようにバリデーションされる
 
-  ID型：JSONとしては文字列を返すが、値が重複しないようにバリデーションされる
+</div>
+<div class="col">
 
-  </div>
+```graphql
+type SpecialMove {
+  id: ID!
+  name: String!
+  power: Int!
+  description: String
+}
+```
 
-  <div class="col">
-
-  ```
-  type SpecialMove {
-    id: ID!
-    name: String!
-    power: Int!
-    description: String
-  }
-  ```
-
-
-  </div>
+</div>
 </div>
 
 ---
@@ -184,36 +176,33 @@ GraphQLのスキーマ定義って何で書くの？
 # カスタスカラー型
 
 <div class="container">
+<div class="col">
 
-  <div class="col">
+組み込みのスカラー型は下記
 
-  組み込みのスカラー型は下記
-  - Int
-  - Float
-  - String
-  - Boolean
-  - ID
+- Int
+- Float
+- String
+- Boolean
+- ID
 
-  独自の型をカスタムスカラーとして定義できる
+独自の型をカスタムスカラーとして定義できる
 
+</div>
+<div class="col">
 
-  </div>
+```graphql
+scalar
+type SpecialMove {
+  id: ID!
+  name: String!
+  power: Int!
+  description: String
+  birthday: DateTime
+}
+```
 
-  <div class="col">
-
-  ```
-  scalar
-  type SpecialMove {
-    id: ID!
-    name: String!
-    power: Int!
-    description: String
-    birthday: DateTime
-  }
-  ```
-
-
-  </div>
+</div>
 </div>
 
 ---
@@ -221,31 +210,30 @@ GraphQLのスキーマ定義って何で書くの？
 # Enum
 
 <div class="container">
+<div class="col">
 
-  <div class="col">
+Enumも別途定義できます
 
-  Enumも別途定義できます
+</div>
+<div class="col">
 
-  </div>
+```graphql
+enum AttackType {
+  BLOW
+  LONG_DISTANCE
+  SUPERNATURAL
+}
 
-  <div class="col">
+type SpecialMove {
+  id: ID!
+  name: String!
+  power: Int!
+  description: String
+  attackType: AttackType!
+}
+```
 
-  ```
-  enum AttackType {
-    BLOW
-    LONG_DISTANCE
-    SUPERNATURAL
-  }
-
-  type SpecialMove {
-    id: ID!
-    name: String!
-    power: Int!
-    description: String
-    attackType: AttackType!
-  }
-  ```
-  </div>
+</div>
 </div>
 
 ---
@@ -266,27 +254,27 @@ Listも定義できます
 # 型の接続
 
 <div class="container">
-  <div class="col">
+<div class="col">
 
-  そういえば
-  必殺技を使う人がいるはず
+そういえば
+必殺技を使う人がいるはず
 
-  使用者の型をとりあえず追加
+使用者の型をとりあえず追加
 
-  (グラフ理論的に言うとすると
-  必殺技ノードは、使う人ノードとエッジを持ってるはず)
+(グラフ理論的に言うとすると
+必殺技ノードは、使う人ノードとエッジを持ってるはず)
 
-  </div>
-  <div class="col">
+</div>
+<div class="col">
 
-  ```
-  type Character {
-    id: ID!
-    name: String!
-  }
-  ```
+```graphql
+type Character {
+  id: ID!
+  name: String!
+}
+```
 
-  </div>
+</div>
 </div>
 
 ---
@@ -294,32 +282,32 @@ Listも定義できます
 # 型の接続
 
 <div class="container">
-  <div class="col">
+<div class="col">
 
-  必殺技に使う人との関係を追加する
+必殺技に使う人との関係を追加する
 
-  (この時点で必殺技ノードが使用者ノードとusedByという関係で繋がったイメージ)
+(この時点で必殺技ノードが使用者ノードとusedByという関係で繋がったイメージ)
 
-  </div>
-  <div class="col">
+</div>
+<div class="col">
 
-  ```
-  type Character {
-    id: ID!
-    name: String!
-  }
+```graphql
+type Character {
+  id: ID!
+  name: String!
+}
 
-  type SpecialMove {
-    id: ID!
-    name: String!
-    power: Int!
-    description: String
-    attackType: AttackType!
-    usedBy: Character!
-  }
-  ```
+type SpecialMove {
+  id: ID!
+  name: String!
+  power: Int!
+  description: String
+  attackType: AttackType!
+  usedBy: Character!
+}
+```
 
-  </div>
+</div>
 </div>
 
 ---
@@ -327,37 +315,36 @@ Listも定義できます
 # 型の接続
 
 <div class="container">
-  <div class="col">
+<div class="col">
 
-  逆にキャラクターも必殺技使える
-  たぶん複数の必殺技使えるはず
+逆にキャラクターも必殺技使える
+たぶん複数の必殺技使えるはず
 
-  必殺技も使用者が複数いるかも
+必殺技も使用者が複数いるかも
 
-  (伝承者候補が複数いるかもしれないし、コピー能力持ちがいるかもしれないし、師匠が同じこともあるかも)
+(伝承者候補が複数いるかもしれないし、コピー能力持ちがいるかもしれないし、師匠が同じこともあるかも)
 
+</div>
+<div class="col">
 
-  </div>
-  <div class="col">
+```graphql
+type Character {
+  id: ID!
+  name: String!
+  learnedSpecialMoves: [SpecialMove!]!
+}
 
-  ```
-  type Character {
-    id: ID!
-    name: String!
-    learnedSpecialMoves: [SpecialMove!]!
-  }
+type SpecialMove {
+  id: ID!
+  name: String!
+  power: Int!
+  description: String
+  attackType: AttackType!
+  usedBy: [Character!]!
+}
+```
 
-  type SpecialMove {
-    id: ID!
-    name: String!
-    power: Int!
-    description: String
-    attackType: AttackType!
-    usedBy: [Character!]!
-  }
-  ```
-
-  </div>
+</div>
 </div>
 
 ---
@@ -376,7 +363,7 @@ Listも定義できます
 </div>
 <div class="col">
 
-```
+```graphql
 type Query {
   allCharacters: [Character!]!
   allSpecialMoves: [SpecialMove!]!
@@ -403,7 +390,7 @@ schema {
 </div>
 <div class="col">
 
-```
+```graphql
 query {
   allCharacters {
     name
@@ -415,10 +402,129 @@ query {
     usedBy
   }
 }
-
 ```
 
 </div>
 </div>
 
 ---
+
+# スルー型
+
+<div class="container">
+<div class="col">
+
+キャラクターが誰と戦ったことがあるのか持たせたい
+戦った場所とかの情報も入れておきたい
+
+中間テーブルのようなイメージで関係を表現する型を定義
+
+</div>
+<div class="col">
+
+```graphql
+type Character {
+  id: ID!
+  name: String!
+  learnedSpecialMoves: [SpecialMove!]!
+  participatedShowdowns: [Showdown!]!
+}
+
+type Showdown {
+  location: String!
+  description: String
+  characters: [Character!]!
+  winners: [Character!]!
+}
+```
+
+</div>
+</div>
+
+---
+
+# ユニオン型
+
+<div class="container">
+<div class="col">
+
+必殺技って言っても
+スタンドとか、エネルギー波系とかで別物じゃない？
+
+複数の型定義のいずれかを返すように定義できる
+
+</div>
+<div class="col">
+
+```graphql
+union SpecialMove = Stand | EnergyWave
+
+type Stand {
+  id: ID!
+  name: String!
+  power: StandEvaluation!
+  speed: StandEvaluation!
+  range: StandEvaluation!
+  stamina: StandEvaluation!
+  precision: StandEvaluation!
+  developmentPotential: StandEvaluation!
+  description: String
+  usedBy: Character!
+}
+
+type EnergyWave {
+  id: ID!
+  name: String!
+  power: Int!
+  description: String
+  usedBy: [Character!]!
+}
+```
+
+</div>
+</div>
+
+---
+
+# インターフェース
+
+<div class="container">
+<div class="col">
+
+必殺技にも共通のフィールドがあるな
+名前とか使用者とか
+
+インターフェースを使うと抽象化できる
+
+実装型は指定されたフィールドが必須になる
+
+</div>
+<div class="col">
+
+```graphql
+interface SpecialMove {
+  id: ID!
+  name: String!
+  usedBy: [Character!]!
+  description: String
+}
+
+type EnergyWave implements SpecialMove {
+  id: ID!
+  name: String!
+  usedBy: [Character!]!
+  description: String
+  power: Int!
+}
+
+type SpecialAbility implements SpecialMove {
+  id: ID!
+  name: String!
+  usedBy: [Character!]!
+  description: String
+  condition: String
+}
+```
+
+</div>
+</div>
