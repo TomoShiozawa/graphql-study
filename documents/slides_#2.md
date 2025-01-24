@@ -533,6 +533,41 @@ type SpecialAbility implements SpecialMove {
 
 ---
 
+# インターフェース
+
+<div class="container">
+<div class="col">
+
+インターフェースを利用すると
+クエリに対して返される型が実装型のいずれかになる
+
+クエリする際は`インラインフラグメント`を使って方に応じた項目を要求できる
+</div>
+<div class="col">
+
+```graphql
+query ExampleQuery {
+  allCharacters {
+    learnedSpecialMoves {
+      name
+      description
+      ... on EnergyWave {
+        power
+      }
+      ... on SpecialAbility {
+        condition
+      }
+    }
+  }
+}
+
+```
+
+</div>
+</div>
+
+---
+
 # 引数
 
 <div class="container">
