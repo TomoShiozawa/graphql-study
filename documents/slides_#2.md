@@ -670,11 +670,10 @@ schema {
 
 ミューテーションできたらサブスクリプション
 
-例えば新規作成のサブスクリプションを定義する
+例えば新規作成を拾うサブスクリプションを定義する
 
 もちろんサブスクリプションでも
 引数使えるので ご自由にどうぞ
-
 
 </div>
 <div class="col">
@@ -731,7 +730,6 @@ type Mutation {
 </div>
 </div>
 
-
 ---
 
 # 入力の型定義
@@ -742,7 +740,6 @@ type Mutation {
 `input`は引数にだけ利用できる型定義です
 
 また`input`の定義は使いまわすことができます
-
 
 </div>
 <div class="col">
@@ -796,7 +793,6 @@ type Query {
 </div>
 </div>
 
-
 ---
 
 # コメント
@@ -806,8 +802,8 @@ type Query {
 
 各定義の説明を書いておきたくなってきたところかと思います
 
-型やフィールドの前に
-`"""` で囲ってコメントが記載できます
+コメントの書き方にルールはありませんが、
+Playgroundなどで良い感じに出してくれるようにしておくと便利
 
 </div>
 <div class="col">
@@ -841,7 +837,6 @@ type SpecialMove {
 
 </div>
 </div>
-
 
 ---
 
@@ -850,39 +845,36 @@ type SpecialMove {
 <div class="container">
 <div class="col">
 
-引数については
-`"` で囲ってコメントが記載できます
+`"` でコメント行
+
+`"""` で囲ってブロックコメントが記載できます
 
 </div>
 <div class="col">
 
 ```graphql
-"""
-必殺技
-"""
-type SpecialMove {
+type Mutation {
   """
-  必殺技のID
+  キャラクターの登録
   """
-  id: ID!
+  postCharacter(
+    "キャラクターの名前"
+    name: String!
+  ): Character!
 
   """
-  技名
+  必殺技の登録
   """
-  name: String!
-
-  """
-  力こそパワー
-  """
-  power: Int!
-
-  """
-  説明
-  """
-  description: String
+  postSpecialMove(
+    "必殺技名"
+    name: String!
+    "利用キャラ"
+    usedBy: [ID!]!
+    "説明"
+    description: String
+  ): SpecialMove!
 }
 ```
 
 </div>
 </div>
-
