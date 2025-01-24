@@ -1,0 +1,233 @@
+"""
+キャラクター
+"""
+type Character {
+  """
+  ID
+  """
+  id: ID!
+
+  """
+  名前
+  """
+  name: String!
+
+  """
+  習得している必殺技
+  """
+  learnedSpecialMoves: [SpecialMove!]!
+
+  """
+  参加した対決
+  """
+  participatedShowdowns: [Showdown!]!
+}
+
+"""
+対決
+"""
+type Showdown {
+  """
+  対決の場所
+  """
+  location: String!
+
+  """
+  対決の説明
+  """
+  description: String
+
+  """
+  対決に参加したキャラクター
+  """
+  characters: [Character!]!
+
+  """
+  対決の勝者
+  """
+  winners: [Character!]!
+}
+
+"""
+必殺技のインターフェース
+"""
+interface SpecialMove {
+  """
+  ID
+  """
+  id: ID!
+
+  """
+  名前
+  """
+  name: String!
+
+  """
+  使用したキャラクター
+  """
+  usedBy: [Character!]!
+
+  """
+  説明
+  """
+  description: String
+}
+
+"""
+エネルギー波
+"""
+type EnergyWave implements SpecialMove {
+  """
+  ID
+  """
+  id: ID!
+
+  """
+  名前
+  """
+  name: String!
+
+  """
+  使用したキャラクター
+  """
+  usedBy: [Character!]!
+
+  """
+  説明
+  """
+  description: String
+
+  """
+  威力
+  """
+  power: Int!
+}
+
+"""
+特殊能力
+"""
+type SpecialAbility implements SpecialMove {
+  """
+  ID
+  """
+  id: ID!
+
+  """
+  名前
+  """
+  name: String!
+
+  """
+  使用したキャラクター
+  """
+  usedBy: [Character!]!
+
+  """
+  説明
+  """
+  description: String
+
+  """
+  発動条件
+  """
+  condition: String
+}
+
+"""
+クエリ
+"""
+type Query {
+  """
+  すべてのキャラクターを取得
+  """
+  allCharacters: [Character!]!
+
+  """
+  すべての必殺技を取得
+  """
+  allSpecialMoves: [SpecialMove!]!
+
+  """
+  指定されたIDのキャラクターを取得
+  """
+  character(id: ID!): Character!
+
+  """
+  指定されたIDの必殺技を取得
+  """
+  specialMove(id: ID!): SpecialMove!
+}
+
+"""
+インプット
+"""
+input PostSpecialMoveInput {
+  """
+  名前
+  """
+  name: String!
+
+  """
+  使用したキャラクター
+  """
+  usedBy: [ID!]!
+
+  """
+  説明
+  """
+  description: String
+}
+
+"""
+ミューテーション
+"""
+type Mutation {
+  """
+  新しいキャラクターを追加
+  """
+  postCharacter(name: String!): Character!
+
+  """
+  新しいエネルギー波を追加
+  """
+  postEnergyWave(
+    "必殺技の共通項目"
+    input: PostSpecialMoveInput!
+    "威力"
+    power: Int!
+  ): EnergyWave!
+
+  """
+  新しい特殊能力を追加
+  """
+  postSpecialAbility(
+    "必殺技の共通項目"
+    input: PostSpecialMoveInput!
+    "発動条件"
+    condition: String!
+  ): SpecialAbility!
+}
+
+"""
+サブスクリプション
+"""
+type Subscription {
+  """
+  新しい必殺技の通知
+  """
+  newSpecialMove: SpecialMove!
+
+  """
+  新しいキャラクターの通知
+  """
+  newCharacter: Character!
+}
+
+"""
+スキーマ定義
+"""
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
