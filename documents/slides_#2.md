@@ -30,7 +30,6 @@ _class: invert lead
 - スキーマって何？
   - GraphQLのAPIのデータ型を定義するもの
   - APIがどんな型のクエリを受けるのか、どんなものを返すのか、という仕様
-  - これがないとAPI作れないぜ
 
 ---
 
@@ -617,8 +616,8 @@ query {
 type Query {
   allCharacters(first: Int = 10): [Character!]!
   allSpecialMoves(
-    attackType: AttackType,
-    sort: Direction = DESC,
+    attackType: AttackType
+    sort: Direction = DESC
     sortBy: SortField = power
   ): [SpecialMove!]!
   character(id: ID!): Character!
@@ -661,3 +660,229 @@ schema {
 
 </div>
 </div>
+
+---
+
+# サブスクリプション
+
+<div class="container">
+<div class="col">
+
+ミューテーションできたらサブスクリプション
+
+例えば新規作成のサブスクリプションを定義する
+
+もちろんサブスクリプションでも
+引数使えるので ご自由にどうぞ
+
+
+</div>
+<div class="col">
+
+```graphql
+type Subscription{
+  newSpecialMove: SpecialMove!
+  newCharacter: Character!
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+```
+
+</div>
+</div>
+
+---
+
+# 入力の型定義
+
+<div class="container">
+<div class="col">
+
+さて、例えば右みたいなやつがあった時
+こう思います
+
+いや、引数の数多くね
+
+ということで `input`の出番です
+
+</div>
+<div class="col">
+
+```graphql
+type Mutation {
+  postStand(
+    name: String!
+    power: StandEvaluation!
+    speed: StandEvaluation!
+    range: StandEvaluation!
+    stamina: StandEvaluation!
+    precision: StandEvaluation!
+    developmentPotential: StandEvaluation!
+    description: String
+    usedBy: Character!
+  ): Stand!
+ }
+```
+
+</div>
+</div>
+
+
+---
+
+# 入力の型定義
+
+<div class="container">
+<div class="col">
+
+`input`は引数にだけ利用できる型定義です
+
+また`input`の定義は使いまわすことができます
+
+
+</div>
+<div class="col">
+
+```graphql
+input StandInput {
+  name: String!
+  power: StandEvaluation!
+  speed: StandEvaluation!
+  range: StandEvaluation!
+  stamina: StandEvaluation!
+  precision: StandEvaluation!
+  developmentPotential: StandEvaluation!
+  description: String
+  usedBy: Character!
+}
+
+type Mutation {
+  postStand(input:StandInput!): Stand!
+  updateStand(id:ID! input:StandInput!): Stand!
+}
+```
+
+</div>
+</div>
+
+---
+
+# 入力の型定義
+
+<div class="container">
+<div class="col">
+
+フィルタ条件やページング用の入力型を定義して使いまわすなんてことも
+
+</div>
+<div class="col">
+
+```graphql
+input DataSort {
+  sort: Direction = DESC
+  sortBy: SortField = power
+}
+
+type Query {
+  allSpecialMoves(sort: DataSort)
+  allStands(sort: DataSort)
+}
+```
+
+</div>
+</div>
+
+
+---
+
+# コメント
+
+<div class="container">
+<div class="col">
+
+各定義の説明を書いておきたくなってきたところかと思います
+
+型やフィールドの前に
+`"""` で囲ってコメントが記載できます
+
+</div>
+<div class="col">
+
+```graphql
+"""
+必殺技
+"""
+type SpecialMove {
+  """
+  必殺技のID
+  """
+  id: ID!
+
+  """
+  技名
+  """
+  name: String!
+
+  """
+  力こそパワー
+  """
+  power: Int!
+
+  """
+  説明
+  """
+  description: String
+}
+```
+
+</div>
+</div>
+
+
+---
+
+# コメント
+
+<div class="container">
+<div class="col">
+
+引数については
+`"` で囲ってコメントが記載できます
+
+</div>
+<div class="col">
+
+```graphql
+"""
+必殺技
+"""
+type SpecialMove {
+  """
+  必殺技のID
+  """
+  id: ID!
+
+  """
+  技名
+  """
+  name: String!
+
+  """
+  力こそパワー
+  """
+  power: Int!
+
+  """
+  説明
+  """
+  description: String
+}
+```
+
+</div>
+</div>
+

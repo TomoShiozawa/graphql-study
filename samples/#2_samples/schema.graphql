@@ -57,7 +57,13 @@ type Mutation {
   ): SpecialMove!
 }
 
+type Subscription {
+  newSpecialMove: SpecialMove!
+  newCharacter: Character!
+}
+
 schema {
   query: Query
   mutation: Mutation
+  subscription: Subscription
 }
