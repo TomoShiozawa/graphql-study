@@ -933,10 +933,10 @@ _paginate: false
 -->
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zen+Antique&display=swap');
 
 section {
-  font-family: "Noto Serif JP";
+  font-family: "Zen Antique";
   font-size: 300px;
 }
 
@@ -947,37 +947,41 @@ section {
 ---
 
 <!--
-_backgroundColor: black
-_color: white
+_backgroundColor: white
+_color: black
 _class: lead
 _paginate: false
 -->
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zen+Antique&display=swap');
 
-section {
-  font-family: "Noto Serif JP";
+p {
+  font-family: "Zen Antique";
+}
+
+.next {
+  font-size: 150px;
 }
 
 .title {
+  margin: 0;
   font-size: 180px;
+  letter-spacing: -20px;
 }
 
-.number {
-  position: absolute;
-  right: 130px;
-  bottom: 50px;
-  font-size: 100px;
-  line-height: 100%;
+.comma {
+  letter-spacing: -120px;
+}
+
+.shitemitai {
+  letter-spacing: -40px;
 }
 </style>
 
-<div class="title">
-実装、してみたい
-</div>
-<div class="number">
-第<br>
-参<br>
-話
+<p class="next">
+次回
+</p>
+<p class="title">
+実装<span class="comma">、</span><span class="shitemitai">してみたい</span>
 </div>
