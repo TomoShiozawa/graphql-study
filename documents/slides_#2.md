@@ -155,7 +155,7 @@ type SpecialMove {
 
 `id!` はID型の定義になる
 
-ID型：JSONとしては文字列を返すが、値が重複しないようにバリデーションされる
+ID型: JSONとしては文字列を返すが、値が重複しないようにバリデーションされる
 
 </div>
 <div class="col">
@@ -828,6 +828,9 @@ type Query {
 </div>
 </div>
 
+</div>
+</div>
+
 ---
 
 # コメント
@@ -835,7 +838,49 @@ type Query {
 <div class="container">
 <div class="col">
 
+そろそろ
 各定義の説明を書いておきたくなってきたところかと思います
+
+`"` でコメント行
+
+`"""` で囲ってブロックコメントが記載できます
+
+</div>
+<div class="col">
+
+```graphql
+type Mutation {
+  """
+  キャラクターの登録
+  """
+  postCharacter(
+    "キャラクターの名前"
+    name: String!
+  ): Character!
+
+  """
+  必殺技の登録
+  """
+  postSpecialMove(
+    "必殺技名"
+    name: String!
+    "利用キャラ"
+    usedBy: [ID!]!
+    "説明"
+    description: String
+  ): SpecialMove!
+}
+```
+
+</div>
+</div>
+
+---
+
+# コメント
+
+<div class="container">
+<div class="col">
 
 コメントの書き方にルールはありませんが、
 Playgroundなどで良い感じに出してくれるようにしておくと便利
@@ -870,46 +915,69 @@ type SpecialMove {
 }
 ```
 
-</div>
-</div>
+---
+
+# 最後に
+
+いかがでしたか？
+
+スキーマ定義できましたか？
 
 ---
 
-# コメント
+<!--
+_backgroundColor: black
+_color: white
+_class: lead
+_paginate: false
+-->
 
-<div class="container">
-<div class="col">
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&display=swap');
 
-`"` でコメント行
-
-`"""` で囲ってブロックコメントが記載できます
-
-</div>
-<div class="col">
-
-```graphql
-type Mutation {
-  """
-  キャラクターの登録
-  """
-  postCharacter(
-    "キャラクターの名前"
-    name: String!
-  ): Character!
-
-  """
-  必殺技の登録
-  """
-  postSpecialMove(
-    "必殺技名"
-    name: String!
-    "利用キャラ"
-    usedBy: [ID!]!
-    "説明"
-    description: String
-  ): SpecialMove!
+section {
+  font-family: "Noto Serif JP";
+  font-size: 300px;
 }
-```
 
+</style>
+
+予告
+
+---
+
+<!--
+_backgroundColor: black
+_color: white
+_class: lead
+_paginate: false
+-->
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&display=swap');
+
+section {
+  font-family: "Noto Serif JP";
+}
+
+.title {
+  font-size: 180px;
+}
+
+.number {
+  position: absolute;
+  right: 130px;
+  bottom: 50px;
+  font-size: 100px;
+  line-height: 100%;
+}
+</style>
+
+<div class="title">
+実装、してみたい
 </div>
+<div class="number">
+第<br>
+参<br>
+話
 </div>
