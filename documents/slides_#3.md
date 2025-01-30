@@ -171,3 +171,93 @@ const { url } = await startStandaloneServer(
 
 </div>
 </div>
+
+---
+
+# 簡単なクエリを追加
+
+<div class="container">
+<div class="col">
+
+第1歩として
+簡単なクエリを追加してみる
+
+watchさせるので、編集して保存だけでOK
+
+以降のスライドの変更は
+`feature/example-commits`のブランチにコミットしています
+そこからとってきてもOK
+`git cherry-pick 18d313a`
+
+</div>
+
+<div class="col">
+
+スキーマ追加
+
+```typescript
+type Query {
+  specialMovesCount: Int!
+  allSpecialMoves: [SpecialMove!]!
+}
+```
+
+リゾルバも同様に追加
+
+```typescript
+const resolvers = {
+  Query: {
+    specialMovesCount: () => specialMoves.length,
+    allSpecialMoves: () => specialMoves,
+  },
+};
+```
+
+</div>
+</div>
+
+---
+
+# ソースの分割や整備
+
+<div class="container">
+<div class="col">
+
+1つのソースに追記してくのつらくね？
+はい、整備していきます
+
+まずはスキーマを外部ファイル化して分割
+`src/schema`配下に下記ファイル追加
+
+- `schema.graphql`
+- `specialMove.graphql`
+
+</div>
+
+<div class="col">
+
+`index.ts`も下記のように修正
+
+```typescript
+import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader';
+import { loadSchemaSync } from '@graphql-tools/load';
+import { addResolversToSchema } from '@graphql-tools/schema';
+
+// スキーマ定義
+const schema = loadSchemaSync('./src/schema/*.graphql', {
+  loaders: [ new GraphQLFileLoader() ]
+});
+
+...
+
+// スキーマとリゾルバ設定
+const schemaWithResolvers = addResolversToSchema({schema, resolvers});
+
+// サーバーインスタンスの生成
+const server = new ApolloServer({
+  schema: schemaWithResolvers,
+});
+```
+
+</div>
+</div>
