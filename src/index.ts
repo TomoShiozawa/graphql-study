@@ -1,19 +1,13 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
+import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
+import { loadSchemaSync } from "@graphql-tools/load";
+import { addResolversToSchema } from "@graphql-tools/schema";
 
 // スキーマ定義
-const typeDefs = `#graphql
-  type SpecialMove {
-    id: ID!
-    name: String!
-    description: String
-  }
-
-  type Query {
-    specialMovesCount: Int!
-    allSpecialMoves: [SpecialMove!]!
-  }
-`;
+const schema = loadSchemaSync("./src/schema/*.graphql", {
+  loaders: [new GraphQLFileLoader()],
+});
 
 const specialMoves = [
   {
@@ -37,10 +31,12 @@ const resolvers = {
   },
 };
 
+// スキーマとリゾルバ設定
+const schemaWithResolvers = addResolversToSchema({ schema, resolvers });
+
 // サーバーインスタンスの生成
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema: schemaWithResolvers,
 });
 
 // サーバーの起動

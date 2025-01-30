@@ -1,0 +1,10 @@
+type SpecialMove {
+  id: ID!
+  name: String!
+  description: String
+}
+
+type Query {
+  specialMovesCount: Int!
+  allSpecialMoves: [SpecialMove!]!
+}
