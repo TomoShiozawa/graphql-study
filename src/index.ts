@@ -10,6 +10,7 @@ const typeDefs = `#graphql
   }
 
   type Query {
+    specialMovesCount: Int!
     allSpecialMoves: [SpecialMove!]!
   }
 `;
@@ -31,6 +32,7 @@ const specialMoves = [
 // リゾルバ
 const resolvers = {
   Query: {
+    specialMovesCount: () => specialMoves.length,
     allSpecialMoves: () => specialMoves,
   },
 };
