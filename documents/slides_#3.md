@@ -40,7 +40,7 @@ section {
 }
 
 .title {
-  font-size: 180px;
+  font-size: 250px;
 }
 
 .comma {
@@ -48,20 +48,20 @@ section {
 }
 
 .shitemitai {
-  letter-spacing: -40px;
+  letter-spacing: -20px;
 }
 
 .number {
   position: absolute;
   right: 130px;
-  bottom: 50px;
+  bottom: 20px;
   font-size: 100px;
   line-height: 100%;
 }
 </style>
 
 <div class="title">
-実装<span class="comma">、</span>してみたい
+実装<span class="comma">、</span><span class="shitemitai">してみたい</span>
 </div>
 <div class="number">
 第<br>
