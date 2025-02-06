@@ -1,4 +1,6 @@
-const specialMoves = [
+import type { QueryResolvers, SpecialMove } from "@/generated/types";
+
+const specialMoves: SpecialMove[] = [
   {
     id: "1",
     name: "北斗百裂拳",
@@ -12,7 +14,7 @@ const specialMoves = [
   },
 ];
 
-export const specialMoveQueryResolver = {
+export const specialMoveQueryResolver: QueryResolvers = {
   specialMovesCount: () => specialMoves.length,
   allSpecialMoves: () => specialMoves,
 };
