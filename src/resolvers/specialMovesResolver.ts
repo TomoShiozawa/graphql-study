@@ -1,4 +1,8 @@
-import type { QueryResolvers, SpecialMove } from "@/generated/types";
+import type {
+  MutationResolvers,
+  QueryResolvers,
+  SpecialMove,
+} from "@/generated/types";
 
 const specialMoves: SpecialMove[] = [
   {
@@ -17,4 +21,12 @@ const specialMoves: SpecialMove[] = [
 export const specialMoveQueryResolver: QueryResolvers = {
   specialMovesCount: () => specialMoves.length,
   allSpecialMoves: () => specialMoves,
+};
+
+export const specialMoveMutationResolver: MutationResolvers = {
+  createSpecialMove: (_, { input }) => {
+    const newSpecialMove = { ...input, id: String(specialMoves.length + 1) };
+    specialMoves.push(newSpecialMove);
+    return newSpecialMove;
+  },
 };
