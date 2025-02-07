@@ -18,7 +18,12 @@ export type Scalars = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  /** 必殺技の新規登録 */
   createSpecialMove: SpecialMove;
+  /** 必殺技の削除 */
+  deleteSpecialMove: Scalars['Boolean']['output'];
+  /** 必殺技の更新 */
+  updateSpecialMove: SpecialMove;
 };
 
 
@@ -26,21 +31,41 @@ export type MutationCreateSpecialMoveArgs = {
   input: SpecialMoveInput;
 };
 
+
+export type MutationDeleteSpecialMoveArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationUpdateSpecialMoveArgs = {
+  id: Scalars['ID']['input'];
+  input: SpecialMoveInput;
+};
+
 export type Query = {
   __typename?: 'Query';
+  /** 登録されている必殺技の一覧 */
   allSpecialMoves: Array<SpecialMove>;
+  /** 登録されている必殺技の数 */
   specialMovesCount: Scalars['Int']['output'];
 };
 
+/** 必殺技 */
 export type SpecialMove = {
   __typename?: 'SpecialMove';
+  /** 説明 */
   description?: Maybe<Scalars['String']['output']>;
+  /** ID */
   id: Scalars['ID']['output'];
+  /** 名前 */
   name: Scalars['String']['output'];
 };
 
+/** 必殺技の入力 */
 export type SpecialMoveInput = {
+  /** 説明 */
   description?: InputMaybe<Scalars['String']['input']>;
+  /** 名前 */
   name: Scalars['String']['input'];
 };
 
@@ -139,6 +164,8 @@ export type ResolversParentTypes = {
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createSpecialMove?: Resolver<ResolversTypes['SpecialMove'], ParentType, ContextType, RequireFields<MutationCreateSpecialMoveArgs, 'input'>>;
+  deleteSpecialMove?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteSpecialMoveArgs, 'id'>>;
+  updateSpecialMove?: Resolver<ResolversTypes['SpecialMove'], ParentType, ContextType, RequireFields<MutationUpdateSpecialMoveArgs, 'id' | 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

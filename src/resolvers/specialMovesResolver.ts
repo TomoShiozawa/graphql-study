@@ -29,4 +29,24 @@ export const specialMoveMutationResolver: MutationResolvers = {
     specialMoves.push(newSpecialMove);
     return newSpecialMove;
   },
+  updateSpecialMove: (_, { id, input }) => {
+    const targetIndex = specialMoves.findIndex(
+      (specialMove) => specialMove.id === id,
+    );
+    if (targetIndex === -1) {
+      throw new Error("SpecialMove not found");
+    }
+    specialMoves[targetIndex] = { id, ...input };
+    return specialMoves[targetIndex];
+  },
+  deleteSpecialMove: (_, { id }) => {
+    const targetIndex = specialMoves.findIndex(
+      (specialMove) => specialMove.id === id,
+    );
+    if (targetIndex === -1) {
+      throw new Error("SpecialMove not found");
+    }
+    specialMoves.splice(targetIndex, 1);
+    return true;
+  },
 };
