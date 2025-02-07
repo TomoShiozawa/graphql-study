@@ -227,7 +227,7 @@ const resolvers = {
 はい、整備していきます
 
 まずはスキーマを外部ファイル化して分割
-`src/schema`配下に下記ファイル追加
+`src/schemas`配下に下記ファイル追加
 
 - `schema.graphql`
 - `specialMove.graphql`
@@ -244,7 +244,7 @@ import { loadSchemaSync } from '@graphql-tools/load';
 import { addResolversToSchema } from '@graphql-tools/schema';
 
 // スキーマ定義
-const schema = loadSchemaSync('./src/schema/*.graphql', {
+const schema = loadSchemaSync('./src/schemas/*.graphql', {
   loaders: [ new GraphQLFileLoader() ]
 });
 
@@ -261,3 +261,384 @@ const server = new ApolloServer({
 
 </div>
 </div>
+
+---
+
+# ソースの分割や整備
+
+<div class="container">
+<div class="col">
+
+`src/schemas/schema.graphql`
+
+```graphql
+schema {
+  query: Query
+}
+
+```
+
+</div>
+<div class="col">
+
+`src/schemas/specialMove.graphql`
+
+```graphql
+type SpecialMove {
+  id: ID!
+  name: String!
+  description: String
+}
+
+type Query {
+  specialMovesCount: Int!
+  allSpecialMoves: [SpecialMove!]!
+}
+```
+
+</div>
+</div>
+
+---
+
+# ソースの分割や整備
+
+<div class="container">
+<div class="col">
+リゾルバも整備しやすいように変更
+
+`src/resolvers`配下に下記ファイル追加
+
+- `index.ts`
+- `specialMovesResolver.ts`
+
+`tsconfig.config`もパスエイリアスを追加
+ (これはオプションなのでよしなに)
+</div>
+<div class="col">
+
+```json
+  "paths": {
+    "@/*": [
+      "./src/*"
+    ],
+    "@resolvers/*": [
+      "./src/resolvers/*"
+    ],
+  }
+```
+
+</div>
+</div>
+
+---
+
+# ソースの分割や整備
+
+<div class="container">
+<div class="col">
+
+`src/resolvers/index.ts`
+
+```typescript
+import { specialMoveQueryResolver }
+  from "@resolvers/specialMovesResolver";
+
+const Query = {
+  ...specialMoveQueryResolver,
+};
+
+export const resolvers = {
+  Query,
+};
+```
+
+</div>
+<div class="col">
+
+`src/resolvers/specialMovesResolver.ts`
+
+```typescript
+const specialMoves = [
+  ...
+];
+
+export const specialMoveQueryResolver = {
+  specialMovesCount: () => specialMoves.length,
+  allSpecialMoves: () => specialMoves,
+};
+```
+
+</div>
+</div>
+
+---
+
+# リゾルバの型について
+
+<div class="container">
+<div class="col">
+
+リゾルバをスキーマに準拠して実装しないといけない...
+TypeScript用の型定義あった方が良くね？
+
+[Codegen](https://the-guild.dev/graphql/codegen/docs/getting-started#to-the-backend)を使って
+スキーマからリゾルバー型定義を生成します
+
+</div>
+<div class="col">
+
+コマンド準備してあります
+
+```bash
+bun codegen
+
+# もちろんwatchモードもご用意させていただきました
+bun codegen-watch
+```
+
+スキーマを読んでリゾルバ用の型定義を
+`src/generated/types.d.ts`に出力してくれます
+
+
+</div>
+</div>
+
+---
+
+# リゾルバの型について
+
+<div class="container">
+<div class="col">
+
+リゾルバに型定義を追加
+
+`src/resolvers/index.ts`
+
+```typescript
+import type { Resolvers } from "@/generated/types";
+
+export const resolvers: Resolvers = {
+  ...
+}
+```
+
+</div>
+<div class="col">
+
+`src/resolvers/specialMovesResolver.ts`
+
+```typescript
+import type { QueryResolvers } from "@/generated/types";
+
+export const specialMoveQueryResolver: QueryResolvers = {
+  ...
+}
+```
+
+</div>
+</div>
+
+---
+
+# Codegenについて補足
+
+今回は説明のしやすさのため
+リゾルバはあらかじめ作っておいて、型定義だけ使うようにしました
+
+やろうと思えばサーバプリセットを使って、
+型定義だけでなく各リゾルバーのガワや、
+個々のスキーマをマージしたものも生成できます
+
+[参考こちら](https://the-guild.dev/graphql/codegen/docs/guides/graphql-server-apollo-yoga-with-server-preset)
+
+---
+
+# ミューテーション追加する
+
+<div class="container">
+<div class="col">
+
+では改めてミューテーション追加してみる
+必殺技の追加を例にします
+
+やることは
+
+- スキーマ更新
+- ミューテーションのリゾルバ実装
+
+まずはスキーマ更新します
+
+</div>
+<div class="col">
+
+`src/schemas/specialMove.graphql`
+
+```graphql
+input SpecialMoveInput {
+  name: String!
+  description: String
+}
+
+type Mutation {
+  createSpecialMove(input: SpecialMoveInput!): SpecialMove!
+}
+```
+
+`src/schemas/schema.graphql`
+
+```graphql
+schema {
+  query: Query
+  mutation: Mutation
+}
+```
+
+</div>
+</div>
+
+---
+
+# ミューテーション追加する
+
+型定義を更新
+`bun codegen`
+
+`createSpecialMove`の実装
+
+`src/resolvers/specialMovesResolver.ts`
+
+```typescript
+export const specialMoveMutationResolver: MutationResolvers = {
+  createSpecialMove: (_, { input }) => {
+    const newSpecialMove = { ...input, id: String(specialMoves.length + 1) };
+    specialMoves.push(newSpecialMove);
+    return newSpecialMove;
+  },
+};
+```
+
+---
+
+# ミューテーション追加する
+
+<div class="container">
+<div class="col">
+
+ルート型のMutationを追加する
+
+</div>
+<div class="col">
+
+`src/resolvers/index.ts`
+
+```typescript
+const Mutation = {
+  ...specialMoveMutationResolver,
+};
+
+export const resolvers: Resolvers = {
+  Query,
+  Mutation,
+};
+```
+
+</div>
+</div>
+
+---
+
+# ミューテーション追加する
+
+ちょっと補足
+
+```typescript
+createSpecialMove: (_, { input }) => {
+```
+
+第1引数は親オブジェクトへの参照
+第2引数がリゾルバの引数
+
+ミューテーション引数に`input`という名前で定義したので、
+`input`というキー名で入力ちが渡ってきます
+
+親オブジェクトの参照は使わないので`_`にしてます
+
+---
+
+# ミューテーション追加する
+
+更新・削除も追加してみる
+
+スキーマ更新
+
+```graphql
+type Mutation {
+  createSpecialMove(input: SpecialMoveInput!): SpecialMove!
+  updateSpecialMove(id: ID!, input: SpecialMoveInput!): SpecialMove!
+  deleteSpecialMove(id: ID!): Boolean!
+}
+```
+
+処理対象が指定できるように
+引数に`id`を追加
+(ついでにコメントも追記しとこ)
+
+---
+
+# ミューテーション追加する
+
+実装はよしなに
+(そろそろコード載せきれなくなったのでスライド切れちゃってごめんなさい)
+
+```typescript
+updateSpecialMove: (_, { id, input }) => {
+  const targetIndex = specialMoves.findIndex(
+    (specialMove) => specialMove.id === id,
+  );
+  if (targetIndex === -1) {
+    throw new Error("SpecialMove not found");
+  }
+  specialMoves[targetIndex] = { id, ...input };
+  return specialMoves[targetIndex];
+},
+deleteSpecialMove: (_, { id }) => {
+  const targetIndex = specialMoves.findIndex(
+    (specialMove) => specialMove.id === id,
+  );
+  if (targetIndex === -1) {
+    throw new Error("SpecialMove not found");
+  }
+  specialMoves.splice(targetIndex, 1);
+  return true;
+},
+```
+
+---
+
+# 関係性の追加
+
+<div class="container">
+<div class="col">
+
+必殺技を使うキャラクターの情報も追加するよ
+
+</div>
+<div class="col">
+
+`src/schemas/character.graphql`
+
+```typescript
+const Mutation = {
+  ...specialMoveMutationResolver,
+};
+
+export const resolvers: Resolvers = {
+  Query,
+  Mutation,
+};
+```
+
+</div>
+</div>
+
