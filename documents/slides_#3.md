@@ -400,7 +400,6 @@ bun codegen-watch
 スキーマを読んでリゾルバ用の型定義を
 `src/generated/types.d.ts`に出力してくれます
 
-
 </div>
 </div>
 
@@ -623,22 +622,191 @@ deleteSpecialMove: (_, { id }) => {
 
 必殺技を使うキャラクターの情報も追加するよ
 
+`src/schemas/specialMove.graphql`
+に利用キャラクターのフィールドを追加
+
+</div>
+<div class="col">
+
+`src/schemas/specialMove.graphql`
+
+```graphql
+type SpecialMove{
+  ...
+
+  """
+  使用キャラクター
+  """
+  usedBy: [Character!]!
+}
+```
+
+</div>
+</div>
+
+---
+
+# 関係性の追加
+
+<div class="container">
+<div class="col">
+
+`src/schemas/character.graphql`
+を追加して、必殺技と同様のスキーマを定義
+
+キャラクター側には使える必殺技のフィールドを追加する
+
+必殺技とキャラクターで互いに参照する関係（多対多）
+
 </div>
 <div class="col">
 
 `src/schemas/character.graphql`
 
+```graphql
+type Character{
+  ...
+
+  """
+  使える必殺技
+  """
+  learnedSpecialMoves: [SpecialMove!]!
+}
+
+
+```
+
+</div>
+</div>
+
+---
+
+# 関係性の追加
+
+<div class="container">
+<div class="col">
+
+したらリゾルバ実装しよう
+ってなるんですが、困ることが起きます
+
+スキーマでSpecialMoveとCharacterが循環してる状態になると、
+型定義も同様に循環してしまう
+
+すると実装が無限ループする
+
+</div>
+<div class="col">
+
+`usedBy`と`learnedSpecialMoves`のフィールドで循環してる
+
+```graphql
+type SpecialMove{
+  ...
+
+  usedBy: [Character!]!
+}
+
+type Character{
+  ...
+
+  learnedSpecialMoves: [SpecialMove!]!
+}
+```
+
+</div>
+</div>
+
+---
+
+# 関係性の追加
+
+<div class="container">
+<div class="col">
+
+対策として、
+SpecialMoveとCharacterの型定義が循環しないように
+マッパーを使って細工します
+
+`src/types/models.ts`
+を追加して
+
+</div>
+<div class="col">
+
+`src/types/models.ts`
+
 ```typescript
-const Mutation = {
-  ...specialMoveMutationResolver,
+export type SpecialMoveModel = {
+  id: string;
+  name: string;
+  description?: string;
+  usedBy: { id: string }[];
 };
 
-export const resolvers: Resolvers = {
-  Query,
-  Mutation,
+export type CharacterModel = {
+  id: string;
+  name: string;
+  description?: string;
+  learnedSpecialMoves: { id: string }[];
 };
 ```
 
 </div>
 </div>
 
+---
+
+# 関係性の追加
+
+<div class="container">
+<div class="col">
+
+Codegenの設定でマッパーを利用するように変更
+
+これでSpecialMoveとCharacterの型が自動生成のものではなく、
+マッパーに設定した型になります
+</div>
+<div class="col">
+
+`codegen.ts`
+
+```typescript
+"src/types/types.generated.d.ts": {
+  plugins: ["typescript", "typescript-resolvers"],
+  config: {
+    useIndexSignature: true,
+    mappers: {
+      SpecialMove: "./models#SpecialMoveModel",
+      Character: "./models#CharacterModel",
+    },
+  },
+}
+```
+
+</div>
+</div>
+
+---
+
+# 関係性の追加
+
+あとは実装を追加します
+
+ポイントは、SpecialMoveのルートリゾルバに`usedBy`のリゾルバを実装すること
+Characterも同様に`learnedSpecialMoves`のリゾルバを実装する
+
+`src/resolvers/index.ts`での読み込みも忘れずに
+
+スライドに載せ切れないので、コミット見てください...
+
+---
+
+# 関係性の追加
+
+補足
+フィールドにリゾルバがない場合は、ライブラリ側で同名のプロパティが読み取られます
+
+例えば
+SpecialMoveのルートに`usedBy`のフィールドだけリゾルバを書いていますが、それ以外の項目は各クエリリゾルバで返されるオブジェクトから値が返されています
+
+[トリビアルリゾルバ](https://graphql.org/learn/execution/#trivial-resolvers)なんて呼ばれます
