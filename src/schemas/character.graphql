@@ -1,0 +1,73 @@
+"""
+キャラクター
+"""
+type Character {
+  """
+  ID
+  """
+  id: ID!
+
+  """
+  名前
+  """
+  name: String!
+
+  """
+  説明
+  """
+  description: String
+
+  """
+  使える必殺技
+  """
+  learnedSpecialMoves: [SpecialMove!]!
+}
+
+type Query {
+  """
+  登録されているキャラクターの数
+  """
+  charactersCount: Int!
+
+  """
+  登録されているキャラクターの一覧
+  """
+  allCharacters: [Character!]!
+}
+
+"""
+キャラクターの入力
+"""
+input CharacterInput {
+  """
+  名前
+  """
+  name: String!
+
+  """
+  説明
+  """
+  description: String
+
+  """
+  使える必殺技
+  """
+  learnedSpecialMoves: [ID!]!
+}
+
+type Mutation {
+  """
+  キャラクターの新規登録
+  """
+  createCharacter(input: CharacterInput!): Character!
+
+  """
+  キャラクターの更新
+  """
+  updateCharacter(id: ID!, input: CharacterInput!): Character!
+
+  """
+  キャラクターの削除
+  """
+  deleteCharacter(id: ID!): Character!
+}
