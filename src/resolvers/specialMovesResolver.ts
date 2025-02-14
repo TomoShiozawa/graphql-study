@@ -9,10 +9,13 @@ import type {
 
 export const specialMoveQueryResolver: QueryResolvers = {
   specialMovesCount: () => specialMoves.length,
-  allSpecialMoves: () => {
-    const records = specialMoves.map((specialMove) => {
-      return { ...specialMove, usedBy: getUsedBy(specialMove.id) };
-    });
+  allSpecialMoves: (_, { after }) => {
+    const records = specialMoves
+      .filter((record) => (after ? record.createdAt > new Date(after) : true))
+      .map((specialMove) => {
+        return { ...specialMove, usedBy: getUsedBy(specialMove.id) };
+      });
+
     return records;
   },
 };
@@ -23,6 +26,7 @@ export const specialMoveMutationResolver: MutationResolvers = {
       id: String(specialMoves.length + 1),
       name: input.name,
       description: input.description ?? "",
+      createdAt: new Date(),
     };
     specialMoves.push(newSpecialMove);
 
@@ -44,6 +48,7 @@ export const specialMoveMutationResolver: MutationResolvers = {
       id,
       ...input,
       description: input.description ?? "",
+      createdAt: specialMoves[targetIndex].createdAt,
     };
     return { ...specialMoves[targetIndex], usedBy: getUsedBy(id) };
   },

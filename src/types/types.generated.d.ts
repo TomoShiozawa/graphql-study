@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { SpecialMoveModel, CharacterModel } from './models';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -15,6 +15,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  DateTime: { input: any; output: any; }
 };
 
 /** キャラクター */
@@ -100,9 +101,16 @@ export type Query = {
   specialMovesCount: Scalars['Int']['output'];
 };
 
+
+export type QueryAllSpecialMovesArgs = {
+  after?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
 /** 必殺技 */
 export type SpecialMove = {
   __typename?: 'SpecialMove';
+  /** 登録日時 */
+  createdAt: Scalars['DateTime']['output'];
   /** 説明 */
   description?: Maybe<Scalars['String']['output']>;
   /** ID */
@@ -198,6 +206,7 @@ export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Character: ResolverTypeWrapper<CharacterModel>;
   CharacterInput: CharacterInput;
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -212,6 +221,7 @@ export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean']['output'];
   Character: CharacterModel;
   CharacterInput: CharacterInput;
+  DateTime: Scalars['DateTime']['output'];
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
@@ -229,6 +239,10 @@ export type CharacterResolvers<ContextType = any, ParentType extends ResolversPa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createCharacter?: Resolver<ResolversTypes['Character'], ParentType, ContextType, RequireFields<MutationCreateCharacterArgs, 'input'>>;
   createSpecialMove?: Resolver<ResolversTypes['SpecialMove'], ParentType, ContextType, RequireFields<MutationCreateSpecialMoveArgs, 'input'>>;
@@ -240,12 +254,13 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   allCharacters?: Resolver<Array<ResolversTypes['Character']>, ParentType, ContextType>;
-  allSpecialMoves?: Resolver<Array<ResolversTypes['SpecialMove']>, ParentType, ContextType>;
+  allSpecialMoves?: Resolver<Array<ResolversTypes['SpecialMove']>, ParentType, ContextType, Partial<QueryAllSpecialMovesArgs>>;
   charactersCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   specialMovesCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 }>;
 
 export type SpecialMoveResolvers<ContextType = any, ParentType extends ResolversParentTypes['SpecialMove'] = ResolversParentTypes['SpecialMove']> = ResolversObject<{
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -255,6 +270,7 @@ export type SpecialMoveResolvers<ContextType = any, ParentType extends Resolvers
 
 export type Resolvers<ContextType = any> = ResolversObject<{
   Character?: CharacterResolvers<ContextType>;
+  DateTime?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   SpecialMove?: SpecialMoveResolvers<ContextType>;

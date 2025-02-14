@@ -21,6 +21,11 @@ type SpecialMove {
   使用キャラクター
   """
   usedBy: [Character!]!
+
+  """
+  登録日時
+  """
+  createdAt: DateTime!
 }
 
 type Query {
@@ -32,7 +37,7 @@ type Query {
   """
   登録されている必殺技の一覧
   """
-  allSpecialMoves: [SpecialMove!]!
+  allSpecialMoves(after: DateTime): [SpecialMove!]!
 }
 
 """

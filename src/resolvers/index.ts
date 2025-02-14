@@ -1,15 +1,16 @@
 import type { Resolvers } from "@/types/types.generated";
 
 import {
+  characterMutationResolver,
+  characterQueryResolver,
+  characterResolver,
+} from "@resolvers/charactersResolver";
+import { dateTimeResolver } from "@resolvers/dateTimeResolver";
+import {
   specialMoveMutationResolver,
   specialMoveQueryResolver,
   specialMoveResolver,
 } from "@resolvers/specialMovesResolver";
-import {
-  characterMutationResolver,
-  characterQueryResolver,
-  characterResolver,
-} from "./charactersResolver";
 
 const Query = {
   ...specialMoveQueryResolver,
@@ -26,4 +27,5 @@ export const resolvers: Resolvers = {
   Mutation,
   ...specialMoveResolver,
   ...characterResolver,
+  DateTime: dateTimeResolver,
 };
