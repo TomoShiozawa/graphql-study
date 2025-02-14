@@ -810,3 +810,208 @@ Characterも同様に`learnedSpecialMoves`のリゾルバを実装する
 SpecialMoveのルートに`usedBy`のフィールドだけリゾルバを書いていますが、それ以外の項目は各クエリリゾルバで返されるオブジェクトから値が返されています
 
 [トリビアルリゾルバ](https://graphql.org/learn/execution/#trivial-resolvers)なんて呼ばれます
+
+---
+
+# カスタムスカラー
+
+<div class="container">
+<div class="col">
+
+登録日時をデータで持たせたい
+
+ってなった時
+スキーマとしては日時であることにしたい
+
+という時はカスタムスカラー
+`DateTime`というカスタムスカラーを追加する
+
+</div>
+<div class="col">
+
+`src/schemas/specialMove.graphql`
+
+```graphql
+type SpecialMove {
+  ...
+  """
+  登録日時
+  """
+  createdAt: DateTime!
+}
+```
+
+`src/schemas/customScalars.graphql`
+
+```graphql
+scalar DateTime
+```
+
+</div>
+</div>
+
+---
+
+# カスタムスカラー
+
+<div class="container">
+<div class="col">
+
+カスタムスカラーを使う場合は、
+リゾルバも用意が必要です
+
+`DateTime`のリゾルバを追加する
+
+</div>
+<div class="col">
+
+`src/resolvers/dateTimeResolver.ts`
+
+```typescript
+import { GraphQLScalarType, Kind } from "graphql";
+
+export const dateTimeResolver = new GraphQLScalarType({
+  name: "DateTime",
+  description: "ISO 8601 時間形式",
+  serialize(value) {
+    if (value instanceof Date) {
+      return new Date(value).toISOString();
+    }
+    throw Error("DateTime must be a Date object");
+  },
+  parseValue(value) {
+    if (typeof value === "string") {
+      return new Date(value);
+    }
+    throw Error("DateTime Scalar parser expected a 'string'");
+  },
+  parseLiteral(ast) {
+    if (ast.kind === Kind.STRING) {
+      return new Date(ast.value);
+    }
+    return null;
+  },
+});
+```
+
+</div>
+</div>
+
+---
+
+# カスタムスカラー
+
+<div class="container">
+<div class="col">
+
+大事な部分は主に下記の部分
+
+`serialize` : バックエンドのデータをGraphQLで扱える(JSONで表現できる)ようにする変換
+
+`parseValue` : クエリ変数としてくる値をデータに変換する処理
+
+`parseLiteral` : クエリにインラインで書かれた値(構文木)をデータに変換する処理
+
+</div>
+<div class="col">
+
+`src/resolvers/dateTimeResolver.ts`
+
+```typescript
+serialize(value) {
+  if (value instanceof Date) {
+    return new Date(value).toISOString();
+  }
+  throw Error("DateTime must be a Date object");
+},
+parseValue(value) {
+  if (typeof value === "string") {
+    return new Date(value);
+  }
+  throw Error("DateTime Scalar parser expected a 'string'");
+},
+parseLiteral(ast) {
+  if (ast.kind === Kind.STRING) {
+    return new Date(ast.value);
+  }
+  return null;
+},
+```
+
+</div>
+</div>
+
+---
+
+# カスタムスカラー
+
+<div class="container">
+<div class="col">
+
+あとはよしなにクエリとミューテーションの実装をいじる
+
+例えば
+クエリのフィルタリング項目として追加してみる
+
+</div>
+<div class="col">
+
+`src/schemas/specialMove.graphql`
+
+```graphql
+type Query {
+  allSpecialMoves(after: DateTime): [SpecialMove!]!
+}
+```
+
+`src/resolvers/specialMovesResolver.ts`
+
+```typescript
+allSpecialMoves: (_, { after }) => {
+  const records = specialMoves
+    .filter((record) => (after ? record.createdAt > new Date(after) : true))
+    .map((specialMove) => {
+      return { ...specialMove, usedBy: getUsedBy(specialMove.id) };
+    });
+
+  return records;
+},
+```
+
+</div>
+</div>
+
+---
+
+# カスタムスカラー
+
+<div class="container">
+<div class="col">
+
+いーーや
+これDateTimeごときで自作しないとダメなの？
+
+ごめんなさい
+[本当はライブラリあります, graphql-scalars](https://the-guild.dev/graphql/scalars/docs/scalars/date-time)
+
+よく使われるやつはライブラリ入れちゃうのが早いです
+</div>
+<div class="col">
+
+スキーマ定義はそのまま、リゾルバをライブラリから持ってきます
+
+`src/resolvers/index.ts`
+
+```typescript
+import { DateTimeResolver } from "graphql-scalars";
+
+export const resolvers: Resolvers = {
+  ...
+  DateTime: DateTimeResolver,
+}
+```
+
+`src/resolvers/dateTimeResolver.ts`は消しちゃいます
+
+</div>
+</div>
