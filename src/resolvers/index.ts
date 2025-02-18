@@ -1,11 +1,11 @@
-import type { Resolvers } from "@/types/types.generated";
+import { DateTimeResolver } from "graphql-scalars";
 
+import type { Resolvers } from "@/types/types.generated";
 import {
   characterMutationResolver,
   characterQueryResolver,
   characterResolver,
 } from "@resolvers/charactersResolver";
-import { dateTimeResolver } from "@resolvers/dateTimeResolver";
 import {
   specialMoveMutationResolver,
   specialMoveQueryResolver,
@@ -27,5 +27,5 @@ export const resolvers: Resolvers = {
   Mutation,
   ...specialMoveResolver,
   ...characterResolver,
-  DateTime: dateTimeResolver,
+  DateTime: DateTimeResolver,
 };
