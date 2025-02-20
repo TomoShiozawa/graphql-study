@@ -1015,3 +1015,258 @@ export const resolvers: Resolvers = {
 
 </div>
 </div>
+
+---
+
+# カスタムスカラー
+
+<div class="container">
+<div class="col">
+
+カスタムスカラーの補足
+
+カスタムスカラーは
+ドメインルールのような独自の仕様・バリデーションなどを表現することに利用できます
+
+ただし、標準にはないスカラーになるため、実装が必要になる
+
+</div>
+<div class="col">
+
+`src/schemas/customScalars.graphql`
+
+```graphql
+scalar Max128String
+```
+
+</div>
+</div>
+
+---
+
+# カスタムスカラー
+
+<div class="container">
+<div class="col">
+
+カスタムスカラーの補足
+
+カスタムスカラーを定義する際は、
+`@specifiedBy`という[ディレクティブを設定することが推奨されています](https://spec.graphql.org/October2021/#sec-Scalars.Custom-Scalars)
+
+スカラーの仕様がわかるように、
+仕様を定義したドキュメントのURLを記載しておきます
+
+</div>
+<div class="col">
+
+`src/schemas/customScalars.graphql`
+
+```graphql
+scalar DateTime
+  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339")
+```
+
+</div>
+</div>
+
+---
+
+# ディレクティブ
+
+<div class="container">
+<div class="col">
+
+唐突に出てきたディレクティブは
+スキーマに注釈をつけるものです
+
+[標準](https://spec.graphql.org/October2021/#sec-Type-System.Directives)では下記のディレクティブがある
+
+- `@skip`
+- `@include`
+- `@deprecated`
+- `@specifiedBy`
+
+</div>
+<div class="col">
+
+例えば`@deprecated`の使い方
+
+`src/schemas/specialMove.graphql`
+
+```graphql
+type SpecialMove {
+  ...
+  description: String
+    @deprecated(reason: "説明など不要！")
+  ...
+}
+```
+
+</div>
+</div>
+
+---
+
+# ディレクティブ
+
+`@skip`, `@include`
+よくクエリで使います
+条件に応じてフィールドを取得するかしないか決めます
+
+`@deprecated`
+非推奨を明示したいときに
+
+`@specifiedBy`
+カスタムスカラーの説明に
+
+細かいところは[こちら参考](https://spec.graphql.org/October2021/#sec-Type-System.Directives)
+
+---
+
+# サブスクリプション
+
+<div class="container">
+<div class="col">
+
+ここまできたら
+あとはサブスクリプションを追加します
+
+まずはいつも通り
+スキーマから変更していきます
+
+</div>
+<div class="col">
+
+`src/schemas/specialMove.graphql`
+
+```graphql
+type Subscription {
+  """
+  必殺技の新規登録を監視
+  """
+  newSpecialMove: SpecialMove!
+}
+```
+
+`src/schemas/schema.graphql`
+
+```graphql
+schema {
+  ...
+  subscription: Subscription
+}
+```
+
+</div>
+</div>
+
+---
+
+# サブスクリプション
+
+<div class="container">
+<div class="col">
+
+そしたら実装をしていきます
+
+サブスクリプションはWebSocketを使って実現します
+
+`startStandaloneServer`ではWebSockerが動かないので
+ExpressのミドルウェアとしてApolloを動かす方式に変更します
+
+
+</div>
+<div class="col">
+
+`src/index.ts`
+
+全量載せられないので、ソース見ながら説明します
+
+</div>
+</div>
+
+---
+
+# サブスクリプション
+
+<div class="container">
+<div class="col">
+
+サブスクリプション用のリゾルバを実装します
+
+`コンテキスト`とは
+どのリゾルバもアクセスできるグローバルな値を入れて置ける場所
+例えば認証情報とかDBの接続情報とか
+
+今回はPubSubのインスタンスを入れてます
+
+</div>
+<div class="col">
+
+`src/resolvers/specialMovesResolver.ts`
+
+```typescript
+export const specialMoveSubscriptionResolver: SubscriptionResolvers = {
+  newSpecialMove: {
+    subscribe: (_, __, { pubsub }: Context) => {
+      return pubsub.asyncIterableIterator("NEW_SPECIAL_MOVE");
+    },
+  },
+};
+
+```
+
+</div>
+</div>
+
+---
+
+# サブスクリプション
+
+<div class="container">
+<div class="col">
+
+`createSpecialMove`の方に、publish処理を追加
+
+これでデータが渡って
+クライアント側でデータ取得ができるようになります
+
+</div>
+<div class="col">
+
+`src/resolvers/specialMovesResolver.ts`
+
+```typescript
+createSpecialMove: (_, { input }, { pubsub }: Context) => {
+  ...
+
+  pubsub.publish("NEW_SPECIAL_MOVE", { newSpecialMove: record });
+  ...
+}
+```
+
+</div>
+</div>
+
+---
+
+# サブスクリプション
+
+<div class="container">
+<div class="col">
+
+Sandboxでサブスクリプションをしつつ、
+新規登録してみてデータが取得できたらOK
+
+サブスクリプションの実装までできた
+
+</div>
+<div class="col">
+
+`src/index.ts`
+
+全量載せられないので、ソース見ながら説明します
+
+</div>
+</div>
