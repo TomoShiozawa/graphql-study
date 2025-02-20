@@ -15,7 +15,7 @@ type SpecialMove {
   """
   説明
   """
-  description: String
+  description: String @deprecated(reason: "説明など不要！")
 
   """
   使用キャラクター
@@ -83,4 +83,11 @@ type Mutation {
   必殺技の削除
   """
   deleteSpecialMove("削除対象となる必殺技のID" id: ID!): Boolean!
+}
+
+type Subscription {
+  """
+  必殺技の新規登録を監視
+  """
+  newSpecialMove: SpecialMove!
 }

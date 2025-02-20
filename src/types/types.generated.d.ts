@@ -1,5 +1,6 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { SpecialMoveModel, CharacterModel } from './models';
+import { Context } from './context';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -111,7 +112,10 @@ export type SpecialMove = {
   __typename?: 'SpecialMove';
   /** 登録日時 */
   createdAt: Scalars['DateTime']['output'];
-  /** 説明 */
+  /**
+   * 説明
+   * @deprecated 説明など不要！
+   */
   description?: Maybe<Scalars['String']['output']>;
   /** ID */
   id: Scalars['ID']['output'];
@@ -129,6 +133,12 @@ export type SpecialMoveInput = {
   name: Scalars['String']['input'];
   /** 使用キャラクター */
   usedBy: Array<Scalars['ID']['input']>;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  /** 必殺技の新規登録を監視 */
+  newSpecialMove: SpecialMove;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -214,6 +224,7 @@ export type ResolversTypes = ResolversObject<{
   SpecialMove: ResolverTypeWrapper<SpecialMoveModel>;
   SpecialMoveInput: SpecialMoveInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  Subscription: ResolverTypeWrapper<{}>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -229,9 +240,10 @@ export type ResolversParentTypes = ResolversObject<{
   SpecialMove: SpecialMoveModel;
   SpecialMoveInput: SpecialMoveInput;
   String: Scalars['String']['output'];
+  Subscription: {};
 }>;
 
-export type CharacterResolvers<ContextType = any, ParentType extends ResolversParentTypes['Character'] = ResolversParentTypes['Character']> = ResolversObject<{
+export type CharacterResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Character'] = ResolversParentTypes['Character']> = ResolversObject<{
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   learnedSpecialMoves?: Resolver<Array<ResolversTypes['SpecialMove']>, ParentType, ContextType>;
@@ -243,7 +255,7 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
   name: 'DateTime';
 }
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createCharacter?: Resolver<ResolversTypes['Character'], ParentType, ContextType, RequireFields<MutationCreateCharacterArgs, 'input'>>;
   createSpecialMove?: Resolver<ResolversTypes['SpecialMove'], ParentType, ContextType, RequireFields<MutationCreateSpecialMoveArgs, 'input'>>;
   deleteCharacter?: Resolver<ResolversTypes['Character'], ParentType, ContextType, RequireFields<MutationDeleteCharacterArgs, 'id'>>;
@@ -252,14 +264,14 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateSpecialMove?: Resolver<ResolversTypes['SpecialMove'], ParentType, ContextType, RequireFields<MutationUpdateSpecialMoveArgs, 'id' | 'input'>>;
 }>;
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   allCharacters?: Resolver<Array<ResolversTypes['Character']>, ParentType, ContextType>;
   allSpecialMoves?: Resolver<Array<ResolversTypes['SpecialMove']>, ParentType, ContextType, Partial<QueryAllSpecialMovesArgs>>;
   charactersCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   specialMovesCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 }>;
 
-export type SpecialMoveResolvers<ContextType = any, ParentType extends ResolversParentTypes['SpecialMove'] = ResolversParentTypes['SpecialMove']> = ResolversObject<{
+export type SpecialMoveResolvers<ContextType = Context, ParentType extends ResolversParentTypes['SpecialMove'] = ResolversParentTypes['SpecialMove']> = ResolversObject<{
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -268,11 +280,16 @@ export type SpecialMoveResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type Resolvers<ContextType = any> = ResolversObject<{
+export type SubscriptionResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
+  newSpecialMove?: SubscriptionResolver<ResolversTypes['SpecialMove'], "newSpecialMove", ParentType, ContextType>;
+}>;
+
+export type Resolvers<ContextType = Context> = ResolversObject<{
   Character?: CharacterResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   SpecialMove?: SpecialMoveResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
 }>;
 

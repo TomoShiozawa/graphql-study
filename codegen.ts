@@ -11,6 +11,7 @@ const config: CodegenConfig = {
           SpecialMove: "./models#SpecialMoveModel",
           Character: "./models#CharacterModel",
         },
+        contextType: "./context#Context",
       },
     },
   },

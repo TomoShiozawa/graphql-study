@@ -10,6 +10,7 @@ import {
   specialMoveMutationResolver,
   specialMoveQueryResolver,
   specialMoveResolver,
+  specialMoveSubscriptionResolver,
 } from "@resolvers/specialMovesResolver";
 
 const Query = {
@@ -22,9 +23,14 @@ const Mutation = {
   ...characterMutationResolver,
 };
 
+const Subscription = {
+  ...specialMoveSubscriptionResolver,
+};
+
 export const resolvers: Resolvers = {
   Query,
   Mutation,
+  Subscription,
   ...specialMoveResolver,
   ...characterResolver,
   DateTime: DateTimeResolver,

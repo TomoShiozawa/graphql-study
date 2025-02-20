@@ -5,6 +5,7 @@ import type {
   QueryResolvers,
   SpecialMove,
   SpecialMoveResolvers,
+  SubscriptionResolvers,
 } from "@/types/types.generated";
 
 export const specialMoveQueryResolver: QueryResolvers = {
@@ -21,7 +22,7 @@ export const specialMoveQueryResolver: QueryResolvers = {
 };
 
 export const specialMoveMutationResolver: MutationResolvers = {
-  createSpecialMove: (_, { input }) => {
+  createSpecialMove: (_, { input }, { pubsub }) => {
     const newSpecialMove = {
       id: String(specialMoves.length + 1),
       name: input.name,
@@ -34,7 +35,10 @@ export const specialMoveMutationResolver: MutationResolvers = {
       return { specialMoveId: newSpecialMove.id, characterId };
     });
     usedByData.push(...newUsedBy);
-    return { ...newSpecialMove, usedBy: getUsedBy(newSpecialMove.id) };
+
+    const record = { ...newSpecialMove, usedBy: getUsedBy(newSpecialMove.id) };
+    pubsub.publish("NEW_SPECIAL_MOVE", { newSpecialMove: record });
+    return record;
   },
 
   updateSpecialMove: (_, { id, input }) => {
@@ -62,6 +66,14 @@ export const specialMoveMutationResolver: MutationResolvers = {
     }
     specialMoves.splice(targetIndex, 1);
     return true;
+  },
+};
+
+export const specialMoveSubscriptionResolver: SubscriptionResolvers = {
+  newSpecialMove: {
+    subscribe: (_, __, { pubsub }) => {
+      return pubsub.asyncIterableIterator("NEW_SPECIAL_MOVE");
+    },
   },
 };
 
