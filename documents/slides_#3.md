@@ -1175,7 +1175,6 @@ schema {
 `startStandaloneServer`ではWebSockerが動かないので
 ExpressのミドルウェアとしてApolloを動かす方式に変更します
 
-
 </div>
 <div class="col">
 
@@ -1270,3 +1269,100 @@ Sandboxでサブスクリプションをしつつ、
 
 </div>
 </div>
+
+---
+
+# 最後に
+
+いかがでしたか？
+今回の実装編はあくまでイメージを掴むレベルのものです
+
+実際は
+データストアと繋いだり(Prisma入れたり)
+クエリの制限を入れたり(深さ制限や複雑度制限など)
+認証のこと考えたり
+などなど出てきます
+
+(また次その辺りやるかも、クライアント実装編もやりたいのでその後かも)
+
+---
+
+<!--
+_backgroundColor: black
+_color: white
+_class: lead
+_paginate: false
+-->
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Antique&display=swap');
+
+section {
+  font-family: "Zen Antique";
+  font-size: 300px;
+}
+
+</style>
+
+予告
+
+---
+
+<!--
+_backgroundColor: white
+_color: black
+_class: lead
+_paginate: false
+-->
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Antique&display=swap');
+
+p {
+  font-family: "Zen Antique";
+}
+
+.next {
+  font-size: 150px;
+}
+
+.title {
+  margin: 0;
+  font-size: 180px;
+  letter-spacing: -20px;
+}
+
+.shitemitai {
+  letter-spacing: -40px;
+}
+</style>
+
+<p class="next">
+次回
+</p>
+<p class="title">
+実装編 : 破
+</div>
+
+---
+
+<!--
+_backgroundColor: black
+_color: white
+_class: lead
+_paginate: false
+-->
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Zen+Antique&display=swap');
+
+section {
+  font-family: "Zen Antique";
+  font-size: 100px;
+}
+
+</style>
+
+内容未定
+2025年4月 公開
+(するかも?)
