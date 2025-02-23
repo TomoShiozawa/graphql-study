@@ -75,8 +75,7 @@ section {
 
 - バックエンド(GraphQLサーバー)の実装をしていきます
 - サンプルはリポジトリにあげてますので、細かい部分はそちらも参考にしてください
-  - TODO: リポジトリのリンク
-  - リポジトリこちら
+  - [リポジトリこちら](https://github.com/TomoShiozawa/graphql-study)
 
 ---
 
@@ -187,7 +186,7 @@ watchさせるので、編集して保存だけでOK
 以降のスライドの変更は
 `feature/example-commits`のブランチにコミットしています
 そこからとってきてもOK
-`git cherry-pick 18d313a`
+commit id `47eb1c1`
 
 </div>
 
@@ -235,6 +234,8 @@ const resolvers = {
 </div>
 
 <div class="col">
+
+commit id `540895c`
 
 `index.ts`も下記のように修正
 
@@ -316,6 +317,8 @@ type Query {
  (これはオプションなのでよしなに)
 </div>
 <div class="col">
+
+commit id `4805554`
 
 ```json
   "paths": {
@@ -412,6 +415,8 @@ bun codegen-watch
 
 リゾルバに型定義を追加
 
+commit id `88cd450`
+
 `src/resolvers/index.ts`
 
 ```typescript
@@ -462,11 +467,11 @@ export const specialMoveQueryResolver: QueryResolvers = {
 必殺技の追加を例にします
 
 やることは
-
 - スキーマ更新
 - ミューテーションのリゾルバ実装
 
 まずはスキーマ更新します
+commit id `41d3743`
 
 </div>
 <div class="col">
@@ -504,6 +509,7 @@ schema {
 `bun codegen`
 
 `createSpecialMove`の実装
+commit id `41d3743`
 
 `src/resolvers/specialMovesResolver.ts`
 
@@ -525,6 +531,8 @@ export const specialMoveMutationResolver: MutationResolvers = {
 <div class="col">
 
 ルート型のMutationを追加する
+
+commit id `41d3743`
 
 </div>
 <div class="col">
@@ -568,6 +576,7 @@ createSpecialMove: (_, { input }) => {
 # ミューテーション追加する
 
 更新・削除も追加してみる
+commit id `afb3986`
 
 スキーマ更新
 
@@ -579,15 +588,13 @@ type Mutation {
 }
 ```
 
-処理対象が指定できるように
-引数に`id`を追加
-(ついでにコメントも追記しとこ)
+処理対象が指定できるように引数に`id`を追加
 
 ---
 
 # ミューテーション追加する
 
-実装はよしなに
+実装はよしなに commit id `afb3986`
 (そろそろコード載せきれなくなったのでスライド切れちゃってごめんなさい)
 
 ```typescript
@@ -625,6 +632,8 @@ deleteSpecialMove: (_, { id }) => {
 `src/schemas/specialMove.graphql`
 に利用キャラクターのフィールドを追加
 
+commit id `61f9465`
+
 </div>
 <div class="col">
 
@@ -658,6 +667,7 @@ type SpecialMove{
 
 必殺技とキャラクターで互いに参照する関係（多対多）
 
+commit id `61f9465`
 </div>
 <div class="col">
 
@@ -730,6 +740,7 @@ SpecialMoveとCharacterの型定義が循環しないように
 `src/types/models.ts`
 を追加して
 
+commit id `61f9465`
 </div>
 <div class="col">
 
@@ -765,6 +776,7 @@ Codegenの設定でマッパーを利用するように変更
 
 これでSpecialMoveとCharacterの型が自動生成のものではなく、
 マッパーに設定した型になります
+commit id `61f9465`
 </div>
 <div class="col">
 
@@ -798,6 +810,7 @@ Characterも同様に`learnedSpecialMoves`のリゾルバを実装する
 `src/resolvers/index.ts`での読み込みも忘れずに
 
 スライドに載せ切れないので、コミット見てください...
+commit id `61f9465`
 
 ---
 
@@ -826,6 +839,7 @@ SpecialMoveのルートに`usedBy`のフィールドだけリゾルバを書い�
 という時はカスタムスカラー
 `DateTime`というカスタムスカラーを追加する
 
+commit id `64443d5`
 </div>
 <div class="col">
 
@@ -862,6 +876,7 @@ scalar DateTime
 
 `DateTime`のリゾルバを追加する
 
+commit id `64443d5`
 </div>
 <div class="col">
 
@@ -953,6 +968,7 @@ parseLiteral(ast) {
 例えば
 クエリのフィルタリング項目として追加してみる
 
+commit id `64443d5`
 </div>
 <div class="col">
 
@@ -995,6 +1011,7 @@ allSpecialMoves: (_, { after }) => {
 [本当はライブラリあります, graphql-scalars](https://the-guild.dev/graphql/scalars/docs/scalars/date-time)
 
 よく使われるやつはライブラリ入れちゃうのが早いです
+commit id `0e46792`
 </div>
 <div class="col">
 
@@ -1135,6 +1152,8 @@ type SpecialMove {
 まずはいつも通り
 スキーマから変更していきます
 
+commit id `0ee5ee2`
+
 </div>
 <div class="col">
 
@@ -1181,6 +1200,7 @@ ExpressのミドルウェアとしてApolloを動かす方式に変更します
 `src/index.ts`
 
 全量載せられないので、ソース見ながら説明します
+commit id `0ee5ee2`
 
 </div>
 </div>
@@ -1196,9 +1216,9 @@ ExpressのミドルウェアとしてApolloを動かす方式に変更します
 
 `コンテキスト`とは
 どのリゾルバもアクセスできるグローバルな値を入れて置ける場所
-例えば認証情報とかDBの接続情報とか
 
 今回はPubSubのインスタンスを入れてます
+commit id `0ee5ee2`
 
 </div>
 <div class="col">
@@ -1231,6 +1251,7 @@ export const specialMoveSubscriptionResolver: SubscriptionResolvers = {
 これでデータが渡って
 クライアント側でデータ取得ができるようになります
 
+commit id `0ee5ee2`
 </div>
 <div class="col">
 
@@ -1252,23 +1273,10 @@ createSpecialMove: (_, { input }, { pubsub }: Context) => {
 
 # サブスクリプション
 
-<div class="container">
-<div class="col">
-
 Sandboxでサブスクリプションをしつつ、
 新規登録してみてデータが取得できたらOK
 
 サブスクリプションの実装までできた
-
-</div>
-<div class="col">
-
-`src/index.ts`
-
-全量載せられないので、ソース見ながら説明します
-
-</div>
-</div>
 
 ---
 
