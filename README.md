@@ -5,12 +5,10 @@
 - `bun start`で開発サーバー起動
   - ホットリロードが有効
 
-## レスポンス確認
 
-ローカルの4000番にリクエストしてください
+## 動作確認
+
+ローカルホスト4000でアクセスできます
+ApolloSandboxが開ければOK
 
 
-サンプル
-```
-curl http://localhost:4000/graphql -H "Content-Type: application/json" -d '{"query": "{books { title author }}"}'
-```
