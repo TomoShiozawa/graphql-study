@@ -1,18 +1,18 @@
 version: "3.9"
 services:
-  application:
+  backend:
     build:
       context: ../
-      dockerfile: .devcontainer/Dockerfile
+      dockerfile: .devcontainer/backend-devcontainer/Dockerfile
     ports:
       - 4000:4000
     working_dir: /workspace
     volumes:
       - ../:/workspace
-      - app-node-modules:/workspace/node_modules
+      - graphql-study-backend-modules:/workspace/backend/node_modules
     command: /bin/bash
     tty: true
     stdin_open: true
 
 volumes:
-  app-node-modules:
+  graphql-study-backend-modules:

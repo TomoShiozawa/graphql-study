@@ -1,8 +1,8 @@
 {
   "name": "Dev Container for GraphQL API with Bun",
-  "dockerComposeFile": "./docker-compose.yml",
-  "service": "application",
-  "workspaceFolder": "/workspace",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "backend",
+  "workspaceFolder": "/workspace/backend",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}
   },
