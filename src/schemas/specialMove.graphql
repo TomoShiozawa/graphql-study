@@ -1,0 +1,93 @@
+"""
+必殺技
+"""
+type SpecialMove {
+  """
+  ID
+  """
+  id: ID!
+
+  """
+  名前
+  """
+  name: String!
+
+  """
+  説明
+  """
+  description: String @deprecated(reason: "説明など不要！")
+
+  """
+  使用キャラクター
+  """
+  usedBy: [Character!]!
+
+  """
+  登録日時
+  """
+  createdAt: DateTime!
+}
+
+type Query {
+  """
+  登録されている必殺技の数
+  """
+  specialMovesCount: Int!
+
+  """
+  登録されている必殺技の一覧
+  """
+  allSpecialMoves(after: DateTime): [SpecialMove!]!
+}
+
+"""
+必殺技の入力
+"""
+input SpecialMoveInput {
+  """
+  名前
+  """
+  name: String!
+
+  """
+  説明
+  """
+  description: String
+
+  """
+  使用キャラクター
+  """
+  usedBy: [ID!]!
+}
+
+type Mutation {
+  """
+  必殺技の新規登録
+  """
+  createSpecialMove(
+    "新規登録する必殺技の情報"
+    input: SpecialMoveInput!
+  ): SpecialMove!
+
+  """
+  必殺技の更新
+  """
+  updateSpecialMove(
+    "更新対象となる必殺技のID"
+    id: ID!
+    "更新内容"
+    input: SpecialMoveInput!
+  ): SpecialMove!
+
+  """
+  必殺技の削除
+  """
+  deleteSpecialMove("削除対象となる必殺技のID" id: ID!): Boolean!
+}
+
+type Subscription {
+  """
+  必殺技の新規登録を監視
+  """
+  newSpecialMove: SpecialMove!
+}
