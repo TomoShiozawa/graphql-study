@@ -1,5 +1,5 @@
 {
-  "name": "Dev Container for GraphQL API with Bun",
+  "name": "Dev Container for Backend",
   "dockerComposeFile": "../docker-compose.yml",
   "service": "backend",
   "workspaceFolder": "/workspace/backend",
