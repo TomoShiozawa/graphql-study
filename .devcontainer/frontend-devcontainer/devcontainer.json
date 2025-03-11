@@ -18,7 +18,8 @@
         "ms-vscode.vscode-typescript-next",
         "graphql.vscode-graphql-syntax",
         "oven.bun-vscode",
-        "biomejs.biome"
+        "biomejs.biome",
+        "graphql.vscode-graphql"
       ]
     }
   }
