@@ -1,5 +1,6 @@
 import { graphql } from "@/gql";
 import { useQuery } from "@apollo/client";
+import Button from "@components/attoms/Button";
 
 const GET_CHARACTERS = graphql(`
   query GetCharacters {
@@ -13,7 +14,7 @@ const GET_CHARACTERS = graphql(`
 `);
 
 function Characters() {
-  const { loading, error, data } = useQuery(GET_CHARACTERS);
+  const { loading, error, data, refetch } = useQuery(GET_CHARACTERS);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -24,6 +25,13 @@ function Characters() {
       <h2 className="text-gallery-200 text-2xl pt-2">
         登録数: {data?.charactersCount}
       </h2>
+      <Button
+        onClick={() => {
+          refetch();
+        }}
+      >
+        <span>再取得</span>
+      </Button>
       {data?.allCharacters.map((character) => (
         <div
           className="text-gallery-200 bg-mako-700 text-xl mt-2 p-2 rounded-lg"

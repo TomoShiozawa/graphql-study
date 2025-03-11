@@ -15,7 +15,7 @@ if (!rootElement) throw new Error("Failed to find the root element");
 createRoot(rootElement).render(
   <StrictMode>
     <ApolloProvider client={apolloClient}>
-      <div className="min-h-screen flex bg-shark-950">
+      <div className="min-h-screen w-screen flex bg-shark-950">
         <App />
       </div>
     </ApolloProvider>

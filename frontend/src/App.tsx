@@ -5,7 +5,7 @@ import "./App.css";
 function App() {
   return (
     <>
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col w-full">
         <h1 className="text-primary-600 text-4xl font-bold p-10">
           Amazing GraphQL App
         </h1>
