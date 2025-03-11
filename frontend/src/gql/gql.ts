@@ -15,10 +15,14 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 type Documents = {
     "\n  query GetCharacters {\n    charactersCount\n    allCharacters {\n      id\n      name\n      description\n    }\n  }\n": typeof types.GetCharactersDocument,
+    "\n  mutation CreateCharacter($input: CharacterInput!) {\n    createCharacter(input: $input) {\n      id\n      name\n    }\n  }\n": typeof types.CreateCharacterDocument,
+    "\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n    }\n  }\n": typeof types.CreateSpecialMoveDocument,
     "\n  query GetSpecialMoves {\n    specialMovesCount\n    allSpecialMoves {\n      id\n      name\n      description\n    }\n  }\n": typeof types.GetSpecialMovesDocument,
 };
 const documents: Documents = {
     "\n  query GetCharacters {\n    charactersCount\n    allCharacters {\n      id\n      name\n      description\n    }\n  }\n": types.GetCharactersDocument,
+    "\n  mutation CreateCharacter($input: CharacterInput!) {\n    createCharacter(input: $input) {\n      id\n      name\n    }\n  }\n": types.CreateCharacterDocument,
+    "\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n    }\n  }\n": types.CreateSpecialMoveDocument,
     "\n  query GetSpecialMoves {\n    specialMovesCount\n    allSpecialMoves {\n      id\n      name\n      description\n    }\n  }\n": types.GetSpecialMovesDocument,
 };
 
@@ -40,6 +44,14 @@ export function graphql(source: string): unknown;
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetCharacters {\n    charactersCount\n    allCharacters {\n      id\n      name\n      description\n    }\n  }\n"): (typeof documents)["\n  query GetCharacters {\n    charactersCount\n    allCharacters {\n      id\n      name\n      description\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CreateCharacter($input: CharacterInput!) {\n    createCharacter(input: $input) {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  mutation CreateCharacter($input: CharacterInput!) {\n    createCharacter(input: $input) {\n      id\n      name\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

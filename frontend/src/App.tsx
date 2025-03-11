@@ -1,4 +1,5 @@
 import Characters from "@components/Characters";
+import InputForms from "@components/InputForms";
 import SpecialMoves from "@components/SpecialMoves";
 import "./App.css";
 
@@ -17,6 +18,9 @@ function App() {
             <div className="h-1/2 min-1/3 shrink-0 overflow-auto">
               <Characters />
             </div>
+          </div>
+          <div className="md:w-1/2 sm:m-full flex flex-col shrink-0 overflow-auto">
+            <InputForms />
           </div>
         </div>
       </div>
