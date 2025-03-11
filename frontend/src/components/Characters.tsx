@@ -1,6 +1,7 @@
-import { gql, useQuery } from "@apollo/client";
+import { graphql } from "@/gql";
+import { useQuery } from "@apollo/client";
 
-const GET_CHARACTERS = gql`
+const GET_CHARACTERS = graphql(`
   query GetCharacters {
     charactersCount
     allCharacters {
@@ -9,7 +10,7 @@ const GET_CHARACTERS = gql`
       description
     }
   }
-`;
+`);
 
 function Characters() {
   const { loading, error, data } = useQuery(GET_CHARACTERS);
@@ -21,21 +22,19 @@ function Characters() {
     <div className="w-full h-full p-8">
       <h1 className="text-gallery-200 text-4xl">Characters</h1>
       <h2 className="text-gallery-200 text-2xl pt-2">
-        登録数: {data.charactersCount}
+        登録数: {data?.charactersCount}
       </h2>
-      {data.allCharacters.map(
-        (character: { id: string; name: string; description: string }) => (
-          <div
-            className="text-gallery-200 bg-mako-700 text-xl mt-2 p-2 rounded-lg"
-            key={character.id}
-          >
-            {character.name}
-            <div className="text-gallery-200 text-sm break-words">
-              {character.description}
-            </div>
+      {data?.allCharacters.map((character) => (
+        <div
+          className="text-gallery-200 bg-mako-700 text-xl mt-2 p-2 rounded-lg"
+          key={character.id}
+        >
+          {character.name}
+          <div className="text-gallery-200 text-sm break-words">
+            {character.description}
           </div>
-        ),
-      )}
+        </div>
+      ))}
     </div>
   );
 }

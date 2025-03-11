@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "format": "biome format --write ./src",
     "lint": "biome lint --write ./src",
-    "check": "biome check --write ./src"
+    "check": "biome check --write ./src",
+    "codegen": "graphql-codegen",
+    "codegen-watch": "graphql-codegen --watch"
   },
   "dependencies": {
     "@apollo/client": "^3.13.1",
@@ -21,11 +23,13 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
+    "@graphql-codegen/cli": "^5.0.5",
+    "@parcel/watcher": "^2.5.1",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react-swc": "^3.8.0",
     "globals": "^15.15.0",
-    "typescript": "~5.7.2",
+    "typescript": "^5.8.2",
     "vite": "^6.2.0",
     "vite-tsconfig-paths": "^5.1.4"
   }
