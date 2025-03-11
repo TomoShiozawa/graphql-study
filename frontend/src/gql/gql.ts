@@ -15,15 +15,19 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 type Documents = {
     "\n  query GetCharacters {\n    charactersCount\n    allCharacters {\n      id\n      name\n      description\n    }\n  }\n": typeof types.GetCharactersDocument,
+    "\n  mutation DeleteCharacter($id: ID!) {\n    deleteCharacter(id: $id){\n      id\n    }\n  }\n": typeof types.DeleteCharacterDocument,
     "\n  mutation CreateCharacter($input: CharacterInput!) {\n    createCharacter(input: $input) {\n      id\n      name\n    }\n  }\n": typeof types.CreateCharacterDocument,
     "\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n    }\n  }\n": typeof types.CreateSpecialMoveDocument,
     "\n  query GetSpecialMoves {\n    specialMovesCount\n    allSpecialMoves {\n      id\n      name\n      description\n    }\n  }\n": typeof types.GetSpecialMovesDocument,
+    "\n  mutation DeleteSpecialMove($id: ID!) {\n    deleteSpecialMove(id: $id)\n  }\n": typeof types.DeleteSpecialMoveDocument,
 };
 const documents: Documents = {
     "\n  query GetCharacters {\n    charactersCount\n    allCharacters {\n      id\n      name\n      description\n    }\n  }\n": types.GetCharactersDocument,
+    "\n  mutation DeleteCharacter($id: ID!) {\n    deleteCharacter(id: $id){\n      id\n    }\n  }\n": types.DeleteCharacterDocument,
     "\n  mutation CreateCharacter($input: CharacterInput!) {\n    createCharacter(input: $input) {\n      id\n      name\n    }\n  }\n": types.CreateCharacterDocument,
     "\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n    }\n  }\n": types.CreateSpecialMoveDocument,
     "\n  query GetSpecialMoves {\n    specialMovesCount\n    allSpecialMoves {\n      id\n      name\n      description\n    }\n  }\n": types.GetSpecialMovesDocument,
+    "\n  mutation DeleteSpecialMove($id: ID!) {\n    deleteSpecialMove(id: $id)\n  }\n": types.DeleteSpecialMoveDocument,
 };
 
 /**
@@ -47,6 +51,10 @@ export function graphql(source: "\n  query GetCharacters {\n    charactersCount\
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  mutation DeleteCharacter($id: ID!) {\n    deleteCharacter(id: $id){\n      id\n    }\n  }\n"): (typeof documents)["\n  mutation DeleteCharacter($id: ID!) {\n    deleteCharacter(id: $id){\n      id\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  mutation CreateCharacter($input: CharacterInput!) {\n    createCharacter(input: $input) {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  mutation CreateCharacter($input: CharacterInput!) {\n    createCharacter(input: $input) {\n      id\n      name\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -56,6 +64,10 @@ export function graphql(source: "\n  mutation CreateSpecialMove($input: SpecialM
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query GetSpecialMoves {\n    specialMovesCount\n    allSpecialMoves {\n      id\n      name\n      description\n    }\n  }\n"): (typeof documents)["\n  query GetSpecialMoves {\n    specialMovesCount\n    allSpecialMoves {\n      id\n      name\n      description\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation DeleteSpecialMove($id: ID!) {\n    deleteSpecialMove(id: $id)\n  }\n"): (typeof documents)["\n  mutation DeleteSpecialMove($id: ID!) {\n    deleteSpecialMove(id: $id)\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
