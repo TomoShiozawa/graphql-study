@@ -70,8 +70,8 @@ const InputForms = () => {
   });
 
   return (
-    <div className="flex flex-col size-full">
-      <h1 className="text-gallery-200 text-4xl">必殺技追加</h1>
+    <div className="flex flex-col w-full">
+      <h1 className="text-gallery-200 text-4xl w-full">必殺技追加</h1>
       <form>
         <TextForm
           label="必殺技名"
