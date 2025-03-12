@@ -1,7 +1,7 @@
+import Button from "@/components/atoms/Button";
+import TextForm from "@/components/atoms/TextForm";
 import { graphql } from "@/gql";
 import { useMutation } from "@apollo/client";
-import Button from "@components/attoms/Button";
-import TextForm from "@components/attoms/TextForm";
 import { useState } from "react";
 
 const CREATE_CHARACTER = graphql(`
@@ -70,7 +70,7 @@ const InputForms = () => {
   });
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full p-4">
       <h1 className="text-gallery-200 text-4xl w-full">必殺技追加</h1>
       <form>
         <TextForm
@@ -79,6 +79,7 @@ const InputForms = () => {
           onChange={(e) =>
             setNewSpecialMove({ ...newSpecialMove, name: e.target.value })
           }
+          value={newSpecialMove.name}
         />
         <TextForm
           label="説明"
@@ -89,6 +90,7 @@ const InputForms = () => {
               description: e.target.value,
             })
           }
+          value={newSpecialMove.description}
         />
         <TextForm
           label="使用キャラクター"
@@ -99,11 +101,20 @@ const InputForms = () => {
               usedBy: e.target.value.split(","),
             })
           }
+          value={newSpecialMove.usedBy.join(",")}
         />
         <Button
           type="submit"
-          onClick={() => {
-            createSpecialMoveLoading ? "loading" : createSpecialMove();
+          onClick={async () => {
+            if (createSpecialMoveLoading) {
+              return;
+            }
+            await createSpecialMove();
+            setNewSpecialMove({
+              name: "",
+              description: "",
+              usedBy: [],
+            });
           }}
           disabled={createSpecialMoveLoading}
         >
@@ -119,6 +130,7 @@ const InputForms = () => {
           onChange={(e) =>
             setNewCharacter({ ...newCharacter, name: e.target.value })
           }
+          value={newCharacter.name}
         />
         <TextForm
           label="説明"
@@ -126,6 +138,7 @@ const InputForms = () => {
           onChange={(e) =>
             setNewCharacter({ ...newCharacter, description: e.target.value })
           }
+          value={newCharacter.description}
         />
         <TextForm
           label="習得している必殺技"
@@ -136,11 +149,20 @@ const InputForms = () => {
               learnedSpecialMoves: e.target.value.split(","),
             })
           }
+          value={newCharacter.learnedSpecialMoves.join(",")}
         />
         <Button
           type="submit"
-          onClick={() => {
-            createCharacterLoading ? "loading" : createCharacter();
+          onClick={async () => {
+            if (createCharacterLoading) {
+              return;
+            }
+            await createCharacter();
+            setNewCharacter({
+              name: "",
+              description: "",
+              learnedSpecialMoves: [],
+            });
           }}
           disabled={createCharacterLoading}
         >

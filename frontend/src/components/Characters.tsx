@@ -1,6 +1,6 @@
+import Button from "@/components/atoms/Button";
 import { graphql } from "@/gql";
 import { useMutation, useQuery } from "@apollo/client";
-import Button from "@components/attoms/Button";
 
 const GET_CHARACTERS = graphql(`
   query GetCharacters {
@@ -9,6 +9,10 @@ const GET_CHARACTERS = graphql(`
       id
       name
       description
+      learnedSpecialMoves {
+        id
+        name
+      }
     }
   }
 `);
@@ -31,7 +35,7 @@ function Characters() {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="w-full h-full p-8">
+    <div className="w-full h-full p-4">
       <h1 className="text-gallery-200 text-4xl">Characters</h1>
       <h2 className="text-gallery-200 text-2xl pt-2">
         登録数: {data?.charactersCount}
@@ -49,9 +53,19 @@ function Characters() {
           key={character.id}
         >
           <div className="flex-1">
-            {character.id}: {character.name}
+            <div className="font-bold">
+              {character.id}: {character.name}
+            </div>
             <div className="text-gallery-200 text-sm break-words">
               {character.description}
+            </div>
+            <div className="text-gallery-200 text-sm break-words mt-2">
+              <span className="font-bold">習得している必殺技</span>
+              <div className="flex flex-wrap gap-2">
+                {character.learnedSpecialMoves.map((specialMove) => (
+                  <div key={specialMove.id}>{specialMove.name}</div>
+                ))}
+              </div>
             </div>
           </div>
           <div className="justify-self-end">

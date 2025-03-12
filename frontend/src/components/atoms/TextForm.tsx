@@ -3,9 +3,12 @@ type TextFormProps = {
   placeholder: string;
   id?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
 };
 
-const TextForm = ({ label, placeholder, id, onChange }: TextFormProps) => {
+const TextForm = (props: TextFormProps) => {
+  const { label, placeholder, id, onChange, value } = props;
+
   return (
     <div className="w-100% p-2">
       <label
@@ -20,6 +23,7 @@ const TextForm = ({ label, placeholder, id, onChange }: TextFormProps) => {
         type="text"
         placeholder={placeholder}
         onChange={onChange}
+        value={value}
       />
     </div>
   );
