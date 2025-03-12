@@ -43,31 +43,29 @@ const InputForms = () => {
     learnedSpecialMoves: [],
   });
 
-  const [
-    createSpecialMove,
-    { loading: createSpecialMoveLoading, error: createSpecialMoveError },
-  ] = useMutation(CREATE_SPECIAL_MOVE, {
-    variables: {
-      input: {
-        name: newSpecialMove.name,
-        description: newSpecialMove.description,
-        usedBy: newSpecialMove.usedBy,
+  const [createSpecialMove, { loading: createSpecialMoveLoading }] =
+    useMutation(CREATE_SPECIAL_MOVE, {
+      variables: {
+        input: {
+          name: newSpecialMove.name,
+          description: newSpecialMove.description,
+          usedBy: newSpecialMove.usedBy,
+        },
       },
-    },
-  });
+    });
 
-  const [
-    createCharacter,
-    { loading: createCharacterLoading, error: createCharacterError },
-  ] = useMutation(CREATE_CHARACTER, {
-    variables: {
-      input: {
-        name: newCharacter.name,
-        description: newCharacter.description,
-        learnedSpecialMoves: newCharacter.learnedSpecialMoves,
+  const [createCharacter, { loading: createCharacterLoading }] = useMutation(
+    CREATE_CHARACTER,
+    {
+      variables: {
+        input: {
+          name: newCharacter.name,
+          description: newCharacter.description,
+          learnedSpecialMoves: newCharacter.learnedSpecialMoves,
+        },
       },
     },
-  });
+  );
 
   return (
     <div className="flex flex-col w-full p-4">
