@@ -76,6 +76,8 @@ section {
 - バックエンド(GraphQLサーバー)の実装をしていきます
 - サンプルはリポジトリにあげてますので、細かい部分はそちらも参考にしてください
   - [リポジトリこちら](https://github.com/TomoShiozawa/graphql-study)
+- `feature/workshop-#3`というブランチを使って説明していきます
+  - `main`ブランチは最終的なゴールの状態なので、最初からそっちを見てもOK
 
 ---
 
@@ -184,7 +186,7 @@ const { url } = await startStandaloneServer(
 watchさせるので、編集して保存だけでOK
 
 以降のスライドの変更は
-`feature/example-commits`のブランチにコミットしています
+`feature/example-commits-#3`のブランチにコミットしています
 そこからとってきてもOK
 commit id `47eb1c1`
 
@@ -467,6 +469,7 @@ export const specialMoveQueryResolver: QueryResolvers = {
 必殺技の追加を例にします
 
 やることは
+
 - スキーマ更新
 - ミューテーションのリゾルバ実装
 
