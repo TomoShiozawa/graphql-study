@@ -19,7 +19,8 @@
         "graphql.vscode-graphql-syntax",
         "oven.bun-vscode",
         "biomejs.biome",
-        "graphql.vscode-graphql"
+        "graphql.vscode-graphql",
+        "bradlc.vscode-tailwindcss"
       ]
     }
   }
