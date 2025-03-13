@@ -68,8 +68,8 @@ function SpecialMoves() {
           </div>
           <div className="justify-self-end">
             <Button
-              onClick={() => {
-                deleteSpecialMove({ variables: { id: move.id } });
+              onClick={async () => {
+                await deleteSpecialMove({ variables: { id: move.id } });
                 refetch();
               }}
               disabled={deleteSpecialMoveLoading}

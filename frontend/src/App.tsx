@@ -1,6 +1,7 @@
 import Characters from "@components/Characters";
 import InputForms from "@components/InputForms";
 import SpecialMoves from "@components/SpecialMoves";
+import Subscriptions from "@components/Subscriptions";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           </div>
           <div className="md:w-1/2 w-full flex flex-col overflow-auto">
             <InputForms />
+            <Subscriptions />
           </div>
         </div>
       </div>

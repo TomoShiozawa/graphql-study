@@ -19,9 +19,7 @@ const GET_CHARACTERS = graphql(`
 
 const DELETE_CHARACTER = graphql(`
   mutation DeleteCharacter($id: ID!) {
-    deleteCharacter(id: $id){
-      id
-    }
+    deleteCharacter(id: $id)
   }
 `);
 
@@ -70,8 +68,8 @@ function Characters() {
           </div>
           <div className="justify-self-end">
             <Button
-              onClick={() => {
-                deleteCharacter({ variables: { id: character.id } });
+              onClick={async () => {
+                await deleteCharacter({ variables: { id: character.id } });
                 refetch();
               }}
               disabled={deleteCharacterLoading}
