@@ -65,6 +65,11 @@ export const specialMoveMutationResolver: MutationResolvers = {
       throw new Error("SpecialMove not found");
     }
     specialMoves.splice(targetIndex, 1);
+    usedByData.splice(
+      0,
+      usedByData.length,
+      ...usedByData.filter((used) => used.specialMoveId !== id),
+    );
     return true;
   },
 };
