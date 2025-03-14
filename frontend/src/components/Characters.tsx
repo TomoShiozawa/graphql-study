@@ -1,6 +1,8 @@
 import Button from "@/components/atoms/Button";
+import NumberForm from "@/components/atoms/NumberForm";
 import { graphql } from "@/gql";
 import { useMutation, useQuery } from "@apollo/client";
+import { useState } from "react";
 
 const GET_CHARACTERS = graphql(`
   query GetCharacters {
@@ -24,7 +26,11 @@ const DELETE_CHARACTER = graphql(`
 `);
 
 function Characters() {
-  const { loading, error, data, refetch } = useQuery(GET_CHARACTERS);
+  const [pollInterval, setPollInterval] = useState("");
+
+  const { loading, error, data, refetch } = useQuery(GET_CHARACTERS, {
+    pollInterval: pollInterval ? Number.parseInt(pollInterval) : 0,
+  });
 
   const [deleteCharacter, { loading: deleteCharacterLoading }] =
     useMutation(DELETE_CHARACTER);
@@ -38,6 +44,14 @@ function Characters() {
       <h2 className="text-gallery-200 text-2xl pt-2">
         登録数: {data?.charactersCount}
       </h2>
+      <NumberForm
+        label="ポーリング"
+        value={Number.parseInt(pollInterval)}
+        onChange={(e) => {
+          setPollInterval(e.target.value);
+        }}
+        placeholder="1000"
+      />
       <Button
         onClick={() => {
           refetch();

@@ -1,4 +1,5 @@
 import Button from "@/components/atoms/Button";
+import NumberForm from "@/components/atoms/NumberForm";
 import TextForm from "@/components/atoms/TextForm";
 import { graphql } from "@/gql";
 import { useMutation, useQuery } from "@apollo/client";
@@ -26,11 +27,13 @@ const DELETE_SPECIAL_MOVE = graphql(`
 `);
 
 function SpecialMoves() {
+  const [pollInterval, setPollInterval] = useState("");
   const [after, setAfter] = useState<string | null>(null);
   const [afterFormValue, setAfterFormValue] = useState("");
 
   const { loading, error, data, refetch } = useQuery(GET_SPECIAL_MOVES, {
     variables: { after },
+    pollInterval: pollInterval ? Number.parseInt(pollInterval) : 0,
   });
 
   const [deleteSpecialMove, { loading: deleteSpecialMoveLoading }] =
@@ -59,6 +62,14 @@ function SpecialMoves() {
           setAfterFormValue(e.target.value);
         }}
         placeholder="2021-09-01T00:00:00.000Z"
+      />
+      <NumberForm
+        label="ポーリング"
+        value={Number.parseInt(pollInterval)}
+        onChange={(e) => {
+          setPollInterval(e.target.value);
+        }}
+        placeholder="1000"
       />
       <Button
         onClick={() => {

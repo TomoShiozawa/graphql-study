@@ -5,12 +5,9 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-const Button = ({
-  onClick,
-  children,
-  type = "button",
-  disabled,
-}: ButtonProps) => {
+const Button = (props: ButtonProps) => {
+  const { onClick, children, type = "button", disabled } = props;
+
   return (
     <button
       type={type}
