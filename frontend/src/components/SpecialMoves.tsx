@@ -1,11 +1,13 @@
 import Button from "@/components/atoms/Button";
+import TextForm from "@/components/atoms/TextForm";
 import { graphql } from "@/gql";
 import { useMutation, useQuery } from "@apollo/client";
+import { useState } from "react";
 
 const GET_SPECIAL_MOVES = graphql(`
-  query GetSpecialMoves {
+  query GetSpecialMoves($after: DateTime) {
     specialMovesCount
-    allSpecialMoves {
+    allSpecialMoves(after: $after) {
       id
       name
       description
@@ -24,7 +26,12 @@ const DELETE_SPECIAL_MOVE = graphql(`
 `);
 
 function SpecialMoves() {
-  const { loading, error, data, refetch } = useQuery(GET_SPECIAL_MOVES);
+  const [after, setAfter] = useState<string | null>(null);
+  const [afterFormValue, setAfterFormValue] = useState("");
+
+  const { loading, error, data, refetch } = useQuery(GET_SPECIAL_MOVES, {
+    variables: { after },
+  });
 
   const [deleteSpecialMove, { loading: deleteSpecialMoveLoading }] =
     useMutation(DELETE_SPECIAL_MOVE);
@@ -38,6 +45,21 @@ function SpecialMoves() {
       <h2 className="text-gallery-200 text-2xl pt-2">
         登録数: {data?.specialMovesCount}
       </h2>
+      <TextForm
+        label="日付"
+        value={afterFormValue}
+        onChange={(e) => {
+          const d = new Date(e.target.value);
+          const isValidDateString =
+            !Number.isNaN(d.getTime()) && d.toISOString() === e.target.value;
+
+          if (isValidDateString) {
+            setAfter(e.target.value);
+          }
+          setAfterFormValue(e.target.value);
+        }}
+        placeholder="2021-09-01T00:00:00.000Z"
+      />
       <Button
         onClick={() => {
           refetch();
