@@ -46,7 +46,7 @@ function Characters() {
       </h2>
       <NumberForm
         label="ポーリング"
-        value={Number.parseInt(pollInterval)}
+        value={pollInterval ? Number.parseInt(pollInterval) : 0}
         onChange={(e) => {
           setPollInterval(e.target.value);
         }}

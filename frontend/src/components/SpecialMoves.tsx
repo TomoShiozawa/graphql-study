@@ -49,7 +49,7 @@ function SpecialMoves() {
         登録数: {data?.specialMovesCount}
       </h2>
       <TextForm
-        label="日付"
+        label="日付フィルター"
         value={afterFormValue}
         onChange={(e) => {
           const d = new Date(e.target.value);
@@ -65,7 +65,7 @@ function SpecialMoves() {
       />
       <NumberForm
         label="ポーリング"
-        value={Number.parseInt(pollInterval)}
+        value={pollInterval ? Number.parseInt(pollInterval) : 0}
         onChange={(e) => {
           setPollInterval(e.target.value);
         }}
