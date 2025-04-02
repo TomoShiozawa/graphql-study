@@ -52,6 +52,11 @@ function SpecialMoves() {
         label="日付フィルター"
         value={afterFormValue}
         onChange={(e) => {
+          if (e.target.value === "") {
+            setAfter(null);
+            setAfterFormValue("");
+            return;
+          }
           const d = new Date(e.target.value);
           const isValidDateString =
             !Number.isNaN(d.getTime()) && d.toISOString() === e.target.value;
