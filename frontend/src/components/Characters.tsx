@@ -21,7 +21,9 @@ const GET_CHARACTERS = graphql(`
 
 const DELETE_CHARACTER = graphql(`
   mutation DeleteCharacter($id: ID!) {
-    deleteCharacter(id: $id)
+    deleteCharacter(id: $id) {
+      id
+    }
   }
 `);
 

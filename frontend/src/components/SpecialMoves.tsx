@@ -22,7 +22,9 @@ const GET_SPECIAL_MOVES = graphql(`
 
 const DELETE_SPECIAL_MOVE = graphql(`
   mutation DeleteSpecialMove($id: ID!) {
-    deleteSpecialMove(id: $id)
+    deleteSpecialMove(id: $id) {
+      id
+    }
   }
 `);
 
