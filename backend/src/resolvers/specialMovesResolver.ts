@@ -64,13 +64,14 @@ export const specialMoveMutationResolver: MutationResolvers = {
     if (targetIndex === -1) {
       throw new Error("SpecialMove not found");
     }
+    const targetSpecialMove = specialMoves[targetIndex];
     specialMoves.splice(targetIndex, 1);
     usedByData.splice(
       0,
       usedByData.length,
       ...usedByData.filter((used) => used.specialMoveId !== id),
     );
-    return true;
+    return { ...targetSpecialMove, usedBy: getUsedBy(id) };
   },
 };
 

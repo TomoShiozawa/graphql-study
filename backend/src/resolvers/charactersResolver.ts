@@ -64,13 +64,14 @@ export const characterMutationResolver: MutationResolvers = {
     if (targetIndex === -1) {
       throw new Error("Character not found");
     }
+    const targetCharacter = characters[targetIndex];
     characters.splice(targetIndex, 1);
     usedByData.splice(
       0,
       usedByData.length,
       ...usedByData.filter((used) => used.characterId !== id),
     );
-    return true;
+    return { ...targetCharacter, learnedSpecialMoves: getLernedSpecialMoves(id) };
   },
 };
 

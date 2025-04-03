@@ -69,5 +69,5 @@ type Mutation {
   """
   キャラクターの削除
   """
-  deleteCharacter(id: ID!): Boolean!
+  deleteCharacter(id: ID!): Character!
 }

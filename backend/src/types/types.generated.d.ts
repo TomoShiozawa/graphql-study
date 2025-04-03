@@ -49,9 +49,9 @@ export type Mutation = {
   /** 必殺技の新規登録 */
   createSpecialMove: SpecialMove;
   /** キャラクターの削除 */
-  deleteCharacter: Scalars['Boolean']['output'];
+  deleteCharacter: Character;
   /** 必殺技の削除 */
-  deleteSpecialMove: Scalars['Boolean']['output'];
+  deleteSpecialMove: SpecialMove;
   /** キャラクターの更新 */
   updateCharacter: Character;
   /** 必殺技の更新 */
@@ -258,8 +258,8 @@ export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversT
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   createCharacter?: Resolver<ResolversTypes['Character'], ParentType, ContextType, RequireFields<MutationCreateCharacterArgs, 'input'>>;
   createSpecialMove?: Resolver<ResolversTypes['SpecialMove'], ParentType, ContextType, RequireFields<MutationCreateSpecialMoveArgs, 'input'>>;
-  deleteCharacter?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCharacterArgs, 'id'>>;
-  deleteSpecialMove?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteSpecialMoveArgs, 'id'>>;
+  deleteCharacter?: Resolver<ResolversTypes['Character'], ParentType, ContextType, RequireFields<MutationDeleteCharacterArgs, 'id'>>;
+  deleteSpecialMove?: Resolver<ResolversTypes['SpecialMove'], ParentType, ContextType, RequireFields<MutationDeleteSpecialMoveArgs, 'id'>>;
   updateCharacter?: Resolver<ResolversTypes['Character'], ParentType, ContextType, RequireFields<MutationUpdateCharacterArgs, 'id' | 'input'>>;
   updateSpecialMove?: Resolver<ResolversTypes['SpecialMove'], ParentType, ContextType, RequireFields<MutationUpdateSpecialMoveArgs, 'id' | 'input'>>;
 }>;
