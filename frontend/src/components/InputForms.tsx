@@ -1,3 +1,4 @@
+import { GET_SPECIAL_MOVES } from "@/components/SpecialMoves";
 import Button from "@/components/atoms/Button";
 import TextForm from "@/components/atoms/TextForm";
 import { graphql } from "@/gql";
@@ -18,6 +19,11 @@ const CREATE_SPECIAL_MOVE = graphql(`
     createSpecialMove(input: $input) {
       id
       name
+      description
+      usedBy {
+        id
+        name
+      }
     }
   }
 `);
@@ -51,6 +57,33 @@ const InputForms = () => {
           description: newSpecialMove.description,
           usedBy: newSpecialMove.usedBy,
         },
+      },
+      update: (cache, { data }) => {
+        if (!data || !data?.createSpecialMove) {
+          throw new Error("New record data is null");
+        }
+
+        const existingData = cache.readQuery({
+          query: GET_SPECIAL_MOVES,
+          variables: {
+            after: null,
+          },
+        });
+
+        cache.writeQuery({
+          query: GET_SPECIAL_MOVES,
+          variables: {
+            after: null,
+          },
+          data: {
+            specialMovesCount: existingData
+              ? existingData.specialMovesCount + 1
+              : 1,
+            allSpecialMoves: existingData
+              ? [...existingData.allSpecialMoves, data.createSpecialMove]
+              : [data.createSpecialMove],
+          },
+        });
       },
     });
 

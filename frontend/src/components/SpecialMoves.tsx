@@ -5,7 +5,7 @@ import { graphql } from "@/gql";
 import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
 
-const GET_SPECIAL_MOVES = graphql(`
+export const GET_SPECIAL_MOVES = graphql(`
   query GetSpecialMoves($after: DateTime) {
     specialMovesCount
     allSpecialMoves(after: $after) {
@@ -39,7 +39,21 @@ function SpecialMoves() {
   });
 
   const [deleteSpecialMove, { loading: deleteSpecialMoveLoading }] =
-    useMutation(DELETE_SPECIAL_MOVE);
+    useMutation(DELETE_SPECIAL_MOVE, {
+      update: (cache, { data }) => {
+        cache.modify({
+          fields: {
+            specialMovesCount: (existingData) => existingData - 1,
+            allSpecialMoves: (existingMovesRefs, { readField }) =>
+              existingMovesRefs.filter(
+                (moveRef: { id: string }) =>
+                  data?.deleteSpecialMove.id !== readField("id", moveRef),
+              ),
+          },
+        });
+        cache.evict({ id: `SpecialMove:${data?.deleteSpecialMove.id}` });
+      },
+    });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -110,7 +124,6 @@ function SpecialMoves() {
             <Button
               onClick={async () => {
                 await deleteSpecialMove({ variables: { id: move.id } });
-                refetch();
               }}
               disabled={deleteSpecialMoveLoading}
             >

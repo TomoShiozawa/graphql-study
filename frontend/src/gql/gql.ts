@@ -17,7 +17,7 @@ type Documents = {
     "\n  query GetCharacters {\n    charactersCount\n    allCharacters {\n      id\n      name\n      description\n      learnedSpecialMoves {\n        id\n        name\n      }\n    }\n  }\n": typeof types.GetCharactersDocument,
     "\n  mutation DeleteCharacter($id: ID!) {\n    deleteCharacter(id: $id) {\n      id\n    }\n  }\n": typeof types.DeleteCharacterDocument,
     "\n  mutation CreateCharacter($input: CharacterInput!) {\n    createCharacter(input: $input) {\n      id\n      name\n    }\n  }\n": typeof types.CreateCharacterDocument,
-    "\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n    }\n  }\n": typeof types.CreateSpecialMoveDocument,
+    "\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n      description\n      usedBy {\n        id\n        name\n      }\n    }\n  }\n": typeof types.CreateSpecialMoveDocument,
     "\n  query GetSpecialMoves($after: DateTime) {\n    specialMovesCount\n    allSpecialMoves(after: $after) {\n      id\n      name\n      description\n      usedBy {\n        id\n        name\n      }\n    }\n  }\n": typeof types.GetSpecialMovesDocument,
     "\n  mutation DeleteSpecialMove($id: ID!) {\n    deleteSpecialMove(id: $id) {\n      id\n    }\n  }\n": typeof types.DeleteSpecialMoveDocument,
     "\n  subscription NewSpecialMove {\n    newSpecialMove {\n      name\n      usedBy {\n        id\n        name\n      }\n      createdAt\n    }\n  }\n": typeof types.NewSpecialMoveDocument,
@@ -26,7 +26,7 @@ const documents: Documents = {
     "\n  query GetCharacters {\n    charactersCount\n    allCharacters {\n      id\n      name\n      description\n      learnedSpecialMoves {\n        id\n        name\n      }\n    }\n  }\n": types.GetCharactersDocument,
     "\n  mutation DeleteCharacter($id: ID!) {\n    deleteCharacter(id: $id) {\n      id\n    }\n  }\n": types.DeleteCharacterDocument,
     "\n  mutation CreateCharacter($input: CharacterInput!) {\n    createCharacter(input: $input) {\n      id\n      name\n    }\n  }\n": types.CreateCharacterDocument,
-    "\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n    }\n  }\n": types.CreateSpecialMoveDocument,
+    "\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n      description\n      usedBy {\n        id\n        name\n      }\n    }\n  }\n": types.CreateSpecialMoveDocument,
     "\n  query GetSpecialMoves($after: DateTime) {\n    specialMovesCount\n    allSpecialMoves(after: $after) {\n      id\n      name\n      description\n      usedBy {\n        id\n        name\n      }\n    }\n  }\n": types.GetSpecialMovesDocument,
     "\n  mutation DeleteSpecialMove($id: ID!) {\n    deleteSpecialMove(id: $id) {\n      id\n    }\n  }\n": types.DeleteSpecialMoveDocument,
     "\n  subscription NewSpecialMove {\n    newSpecialMove {\n      name\n      usedBy {\n        id\n        name\n      }\n      createdAt\n    }\n  }\n": types.NewSpecialMoveDocument,
@@ -61,7 +61,7 @@ export function graphql(source: "\n  mutation CreateCharacter($input: CharacterI
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n    }\n  }\n"];
+export function graphql(source: "\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n      description\n      usedBy {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateSpecialMove($input: SpecialMoveInput!) {\n    createSpecialMove(input: $input) {\n      id\n      name\n      description\n      usedBy {\n        id\n        name\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
