@@ -22,8 +22,11 @@ export const characterQueryResolver: QueryResolvers = {
 
 export const characterMutationResolver: MutationResolvers = {
   createCharacter: (_, { input }) => {
+    const latestCharacter = characters[characters.length - 1];
     const newCharacter = {
-      id: String(characters.length + 1),
+      id: String(
+        latestCharacter ? Number(characters[characters.length - 1].id) + 1 : 1,
+      ),
       name: input.name,
       description: input.description ?? "",
     };
@@ -64,9 +67,15 @@ export const characterMutationResolver: MutationResolvers = {
     if (targetIndex === -1) {
       throw new Error("Character not found");
     }
-    const deletedCharacter = characters.splice(targetIndex, 1)[0];
+    const targetCharacter = characters[targetIndex];
+    characters.splice(targetIndex, 1);
+    usedByData.splice(
+      0,
+      usedByData.length,
+      ...usedByData.filter((used) => used.characterId !== id),
+    );
     return {
-      ...deletedCharacter,
+      ...targetCharacter,
       learnedSpecialMoves: getLernedSpecialMoves(id),
     };
   },

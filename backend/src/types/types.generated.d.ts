@@ -51,7 +51,7 @@ export type Mutation = {
   /** キャラクターの削除 */
   deleteCharacter: Character;
   /** 必殺技の削除 */
-  deleteSpecialMove: Scalars['Boolean']['output'];
+  deleteSpecialMove: SpecialMove;
   /** キャラクターの更新 */
   updateCharacter: Character;
   /** 必殺技の更新 */
@@ -259,7 +259,7 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
   createCharacter?: Resolver<ResolversTypes['Character'], ParentType, ContextType, RequireFields<MutationCreateCharacterArgs, 'input'>>;
   createSpecialMove?: Resolver<ResolversTypes['SpecialMove'], ParentType, ContextType, RequireFields<MutationCreateSpecialMoveArgs, 'input'>>;
   deleteCharacter?: Resolver<ResolversTypes['Character'], ParentType, ContextType, RequireFields<MutationDeleteCharacterArgs, 'id'>>;
-  deleteSpecialMove?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteSpecialMoveArgs, 'id'>>;
+  deleteSpecialMove?: Resolver<ResolversTypes['SpecialMove'], ParentType, ContextType, RequireFields<MutationDeleteSpecialMoveArgs, 'id'>>;
   updateCharacter?: Resolver<ResolversTypes['Character'], ParentType, ContextType, RequireFields<MutationUpdateCharacterArgs, 'id' | 'input'>>;
   updateSpecialMove?: Resolver<ResolversTypes['SpecialMove'], ParentType, ContextType, RequireFields<MutationUpdateSpecialMoveArgs, 'id' | 'input'>>;
 }>;

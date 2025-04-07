@@ -23,8 +23,9 @@ export const specialMoveQueryResolver: QueryResolvers = {
 
 export const specialMoveMutationResolver: MutationResolvers = {
   createSpecialMove: (_, { input }, { pubsub }) => {
+    const latestSpecialMove = specialMoves[specialMoves.length - 1];
     const newSpecialMove = {
-      id: String(specialMoves.length + 1),
+      id: String(latestSpecialMove ? Number(latestSpecialMove.id) + 1 : 1),
       name: input.name,
       description: input.description ?? "",
       createdAt: new Date(),
@@ -64,8 +65,14 @@ export const specialMoveMutationResolver: MutationResolvers = {
     if (targetIndex === -1) {
       throw new Error("SpecialMove not found");
     }
+    const targetSpecialMove = specialMoves[targetIndex];
     specialMoves.splice(targetIndex, 1);
-    return true;
+    usedByData.splice(
+      0,
+      usedByData.length,
+      ...usedByData.filter((used) => used.specialMoveId !== id),
+    );
+    return { ...targetSpecialMove, usedBy: getUsedBy(id) };
   },
 };
 

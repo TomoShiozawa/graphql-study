@@ -1,4 +1,4 @@
-# Based on <https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore>
+# Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
 
 # Logs
 
@@ -10,7 +10,7 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
-# Diagnostic reports (<https://nodejs.org/api/report.html>)
+# Diagnostic reports (https://nodejs.org/api/report.html)
 
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
@@ -34,11 +34,11 @@ coverage
 
 .nyc_output
 
-# Grunt intermediate storage (<https://gruntjs.com/creating-plugins#storing-task-files>)
+# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
 
 .grunt
 
-# Bower dependency directory (<https://bower.io/>)
+# Bower dependency directory (https://bower.io/)
 
 bower_components
 
@@ -46,7 +46,7 @@ bower_components
 
 .lock-wscript
 
-# Compiled binary addons (<https://nodejs.org/api/addons.html>)
+# Compiled binary addons (https://nodejs.org/api/addons.html)
 
 build/Release
 
@@ -55,7 +55,7 @@ build/Release
 node_modules/
 jspm_packages/
 
-# Snowpack dependency directory (<https://snowpack.dev/>)
+# Snowpack dependency directory (https://snowpack.dev/)
 
 web_modules/
 
@@ -102,7 +102,7 @@ web_modules/
 .env.production.local
 .env.local
 
-# parcel-bundler cache (<https://parceljs.org/>)
+# parcel-bundler cache (https://parceljs.org/)
 
 .cache
 .parcel-cache
@@ -123,7 +123,7 @@ dist
 
 # Comment in the public line in if your project uses Gatsby and not Next.js
 
-# <https://nextjs.org/blog/next-9-1#public-directory-support>
+# https://nextjs.org/blog/next-9-1#public-directory-support
 
 # public
 
@@ -169,9 +169,8 @@ dist
 .pnp.\*
 
 # IntelliJ based IDEs
-
 .idea
 
 # Finder (MacOS) folder config
-
 .DS_Store
+

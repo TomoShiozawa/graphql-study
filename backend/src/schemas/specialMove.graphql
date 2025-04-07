@@ -82,7 +82,7 @@ type Mutation {
   """
   必殺技の削除
   """
-  deleteSpecialMove("削除対象となる必殺技のID" id: ID!): Boolean!
+  deleteSpecialMove("削除対象となる必殺技のID" id: ID!): SpecialMove!
 }
 
 type Subscription {
