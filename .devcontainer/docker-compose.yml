@@ -13,6 +13,9 @@ services:
     command: /bin/bash
     tty: true
     stdin_open: true
+    depends_on:
+      db:
+        condition: service_healthy
   frontend:
     build:
       context: ../
@@ -26,6 +29,17 @@ services:
     command: /bin/bash
     tty: true
     stdin_open: true
+  db:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
 
 volumes:
   graphql-study-backend-modules:

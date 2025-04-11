@@ -24,9 +24,18 @@
       "@/*": [
         "./src/*"
       ],
+      "@repositories/*": [
+        "./src/repositories/*"
+      ],
+      "@usecases/*": [
+        "./src/usecases/*"
+      ],
       "@resolvers/*": [
         "./src/resolvers/*"
       ],
+      "@generated/client": [
+        "./src/generated/client"
+      ]
     }
   }
 }

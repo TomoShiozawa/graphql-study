@@ -1,100 +1,43 @@
-import { characters } from "@/data/charactersData";
-import { specialMoves, usedBy as usedByData } from "@/data/specialMovesData";
+import { CharacterRepositoryImpl } from "@/repositories/characterRepositoryImpl";
 import type {
-  Character,
-  CharacterResolvers,
   MutationResolvers,
   QueryResolvers,
 } from "@/types/types.generated";
+import { CreateUsecaseImpl } from "@/usecases/characters/createUsecaseImpl";
+import { DeleteUsecaseImpl } from "@/usecases/characters/deleteUsecaseImpl";
+import { GetAllUsecaseImpl } from "@/usecases/characters/getAllUsecaseImpl";
+import { GetCountUsecaseImpl } from "@/usecases/characters/getCountUsecaseImpl";
+import { UpdateUsecaseImpl } from "@/usecases/characters/updateUsecaseImpl";
 
 export const characterQueryResolver: QueryResolvers = {
-  charactersCount: () => characters.length,
-  allCharacters: () => {
-    const records = characters.map((character) => {
-      return {
-        ...character,
-        learnedSpecialMoves: getLernedSpecialMoves(character.id),
-      };
-    });
-    return records;
+  charactersCount: async (_, __, { prismaClient }) => {
+    const characterRepository = new CharacterRepositoryImpl(prismaClient);
+    const getCountUsecase = new GetCountUsecaseImpl(characterRepository);
+    return await getCountUsecase.execute();
+  },
+  allCharacters: async (_, __, { prismaClient }) => {
+    const characterRepository = new CharacterRepositoryImpl(prismaClient);
+    const getAllUsecase = new GetAllUsecaseImpl(characterRepository);
+    return await getAllUsecase.execute();
   },
 };
 
 export const characterMutationResolver: MutationResolvers = {
-  createCharacter: (_, { input }) => {
-    const latestCharacter = characters[characters.length - 1];
-    const newCharacter = {
-      id: String(
-        latestCharacter ? Number(characters[characters.length - 1].id) + 1 : 1,
-      ),
-      name: input.name,
-      description: input.description ?? "",
-    };
-    characters.push(newCharacter);
-
-    const newUsedBy = input.learnedSpecialMoves.map((specialMoveId) => {
-      return { specialMoveId, characterId: newCharacter.id };
-    });
-    usedByData.push(...newUsedBy);
-    return {
-      ...newCharacter,
-      learnedSpecialMoves: getLernedSpecialMoves(newCharacter.id),
-    };
+  createCharacter: async (_, { input }, { prismaClient }) => {
+    const characterRepository = new CharacterRepositoryImpl(prismaClient);
+    const createUsecase = new CreateUsecaseImpl(characterRepository);
+    return await createUsecase.execute({ input });
   },
 
-  updateCharacter: (_, { id, input }) => {
-    const targetIndex = characters.findIndex(
-      (character) => character.id === id,
-    );
-    if (targetIndex === -1) {
-      throw new Error("Character not found");
-    }
-    characters[targetIndex] = {
-      id,
-      ...input,
-      description: input.description ?? "",
-    };
-    return {
-      ...characters[targetIndex],
-      learnedSpecialMoves: getLernedSpecialMoves(id),
-    };
+  updateCharacter: async (_, { id, input }, { prismaClient }) => {
+    const characterRepository = new CharacterRepositoryImpl(prismaClient);
+    const updateUsecase = new UpdateUsecaseImpl(characterRepository);
+    return await updateUsecase.execute({ id, input });
   },
 
-  deleteCharacter: (_, { id }) => {
-    const targetIndex = characters.findIndex(
-      (character) => character.id === id,
-    );
-    if (targetIndex === -1) {
-      throw new Error("Character not found");
-    }
-    const targetCharacter = characters[targetIndex];
-    characters.splice(targetIndex, 1);
-    usedByData.splice(
-      0,
-      usedByData.length,
-      ...usedByData.filter((used) => used.characterId !== id),
-    );
-    return {
-      ...targetCharacter,
-      learnedSpecialMoves: getLernedSpecialMoves(id),
-    };
+  deleteCharacter: async (_, { id }, { prismaClient }) => {
+    const characterRepository = new CharacterRepositoryImpl(prismaClient);
+    const deleteUsecase = new DeleteUsecaseImpl(characterRepository);
+    return await deleteUsecase.execute(id);
   },
-};
-
-export const characterResolver: CharacterResolvers = {
-  Character: {
-    learnedSpecialMoves: (parent: Character) => {
-      return getLernedSpecialMoves(parent.id);
-    },
-  },
-};
-
-const getLernedSpecialMoves = (characterId: string) => {
-  const specialMoveIds = usedByData
-    .filter((used) => used.characterId === characterId)
-    .map((usedBy) => usedBy.specialMoveId);
-  const learnedSpecialMoves = specialMoves.filter((specialMove) =>
-    specialMoveIds.includes(specialMove.id),
-  );
-  return learnedSpecialMoves;
 };
