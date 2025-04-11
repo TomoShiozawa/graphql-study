@@ -1,78 +1,51 @@
-import { characters } from "@/data/charactersData";
-import { specialMoves, usedBy as usedByData } from "@/data/specialMovesData";
+import { SpecialMoveRepositoryImpl } from "@/repositories/specialMoverepositoryImpl";
 import type {
   MutationResolvers,
   QueryResolvers,
-  SpecialMove,
-  SpecialMoveResolvers,
   SubscriptionResolvers,
 } from "@/types/types.generated";
+import { CreateUsecaseImpl } from "@/usecases/specialMoves/createUsecaseImpl";
+import { DeleteUsecaseImpl } from "@/usecases/specialMoves/deleteUsecaseImpl";
+import { GetAllUsecaseImpl } from "@/usecases/specialMoves/getAllUsecaseImpl";
+import { GetCountUsecaseImpl } from "@/usecases/specialMoves/getCountUsecaseImpl";
+import { UpdateUsecaseImpl } from "@/usecases/specialMoves/updateUsecaseImpl";
 
 export const specialMoveQueryResolver: QueryResolvers = {
-  specialMovesCount: () => specialMoves.length,
-  allSpecialMoves: (_, { after }) => {
-    const records = specialMoves
-      .filter((record) => (after ? record.createdAt > new Date(after) : true))
-      .map((specialMove) => {
-        return { ...specialMove, usedBy: getUsedBy(specialMove.id) };
-      });
-
-    return records;
+  specialMovesCount: async (_, __, { prismaClient }) => {
+    const specialMoveRepository = new SpecialMoveRepositoryImpl(prismaClient);
+    const getCountUsecase = new GetCountUsecaseImpl(specialMoveRepository);
+    return await getCountUsecase.execute();
+  },
+  allSpecialMoves: async (_, { after }, { prismaClient }) => {
+    const specialMoveRepository = new SpecialMoveRepositoryImpl(prismaClient);
+    const getAllUsecase = new GetAllUsecaseImpl(specialMoveRepository);
+    return await getAllUsecase.execute(after);
   },
 };
 
 export const specialMoveMutationResolver: MutationResolvers = {
-  createSpecialMove: (_, { input }, { pubsub }) => {
-    const latestSpecialMove = specialMoves[specialMoves.length - 1];
-    const newSpecialMove = {
-      id: String(latestSpecialMove ? Number(latestSpecialMove.id) + 1 : 1),
-      name: input.name,
-      description: input.description ?? "",
-      createdAt: new Date(),
-    };
-    specialMoves.push(newSpecialMove);
-
-    const newUsedBy = input.usedBy.map((characterId) => {
-      return { specialMoveId: newSpecialMove.id, characterId };
+  createSpecialMove: async (_, { input }, { pubsub, prismaClient }) => {
+    const specialMoveRepository = new SpecialMoveRepositoryImpl(prismaClient);
+    const createUsecase = new CreateUsecaseImpl(pubsub, specialMoveRepository);
+    return await createUsecase.execute({
+      pubsub,
+      input,
     });
-    usedByData.push(...newUsedBy);
-
-    const record = { ...newSpecialMove, usedBy: getUsedBy(newSpecialMove.id) };
-    pubsub.publish("NEW_SPECIAL_MOVE", { newSpecialMove: record });
-    return record;
   },
 
-  updateSpecialMove: (_, { id, input }) => {
-    const targetIndex = specialMoves.findIndex(
-      (specialMove) => specialMove.id === id,
-    );
-    if (targetIndex === -1) {
-      throw new Error("SpecialMove not found");
-    }
-    specialMoves[targetIndex] = {
+  updateSpecialMove: async (_, { id, input }, { prismaClient }) => {
+    const specialMoveRepository = new SpecialMoveRepositoryImpl(prismaClient);
+    const updateUsecase = new UpdateUsecaseImpl(specialMoveRepository);
+    return await updateUsecase.execute({
       id,
-      ...input,
-      description: input.description ?? "",
-      createdAt: specialMoves[targetIndex].createdAt,
-    };
-    return { ...specialMoves[targetIndex], usedBy: getUsedBy(id) };
+      input,
+    });
   },
 
-  deleteSpecialMove: (_, { id }) => {
-    const targetIndex = specialMoves.findIndex(
-      (specialMove) => specialMove.id === id,
-    );
-    if (targetIndex === -1) {
-      throw new Error("SpecialMove not found");
-    }
-    const targetSpecialMove = specialMoves[targetIndex];
-    specialMoves.splice(targetIndex, 1);
-    usedByData.splice(
-      0,
-      usedByData.length,
-      ...usedByData.filter((used) => used.specialMoveId !== id),
-    );
-    return { ...targetSpecialMove, usedBy: getUsedBy(id) };
+  deleteSpecialMove: async (_, { id }, { prismaClient }) => {
+    const specialMoveRepository = new SpecialMoveRepositoryImpl(prismaClient);
+    const deleteUsecase = new DeleteUsecaseImpl(specialMoveRepository);
+    return await deleteUsecase.execute(id);
   },
 };
 
@@ -82,20 +55,4 @@ export const specialMoveSubscriptionResolver: SubscriptionResolvers = {
       return pubsub.asyncIterableIterator("NEW_SPECIAL_MOVE");
     },
   },
-};
-
-export const specialMoveResolver: SpecialMoveResolvers = {
-  SpecialMove: {
-    usedBy: (parent: SpecialMove) => getUsedBy(parent.id),
-  },
-};
-
-const getUsedBy = (specialMoveId: string) => {
-  const characterIds = usedByData
-    .filter((used) => used.specialMoveId === specialMoveId)
-    .map((usedBy) => usedBy.characterId);
-  const usedBy = characters.filter((character) =>
-    characterIds.includes(character.id),
-  );
-  return usedBy;
 };

@@ -12,6 +12,7 @@ import { PubSub } from "graphql-subscriptions";
 import { useServer } from "graphql-ws/use/ws";
 import { WebSocketServer } from "ws";
 
+import { PrismaClient } from "@generated/client";
 import { resolvers } from "@resolvers/index";
 
 // スキーマ定義
@@ -25,6 +26,9 @@ const schemaWithResolvers = addResolversToSchema({ schema, resolvers });
 // PubSub用意
 const pubsub = new PubSub();
 
+// PrismaClient用意
+const prismaClient = new PrismaClient();
+
 // HTTPサーバーの設定
 const app = express();
 const httpServer = createServer(app);
@@ -37,7 +41,7 @@ const wsServer = new WebSocketServer({
 const serverCleanup = useServer(
   {
     schema: schemaWithResolvers,
-    context: async () => ({ pubsub }),
+    context: async () => ({ pubsub, prismaClient }),
   },
   wsServer,
 );
@@ -66,7 +70,7 @@ app.use(
   cors<cors.CorsRequest>(),
   express.json(),
   expressMiddleware(apolloServer, {
-    context: async () => ({ pubsub }),
+    context: async () => ({ pubsub, prismaClient }),
   }),
 );
 httpServer.listen(4000, () => {
