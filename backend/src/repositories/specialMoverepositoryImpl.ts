@@ -63,8 +63,12 @@ export class SpecialMoveRepositoryImpl implements SpecialMoveRepository {
     const record = await this.prismaClient.specialMove.update({
       where: { id: Number(id) },
       data: {
-        name: input.name,
-        description: input.description,
+        ...input,
+        usedBy: {
+          connect: input.usedBy.map((usedById) => ({
+            id: Number(usedById),
+          })),
+        },
       },
       include: {
         usedBy: true,
