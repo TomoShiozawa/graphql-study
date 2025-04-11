@@ -12,6 +12,9 @@ const config: CodegenConfig = {
           Character: "./models#CharacterModel",
         },
         contextType: "./context#Context",
+        scalars: {
+          DateTime: "Date",
+        }
       },
     },
   },

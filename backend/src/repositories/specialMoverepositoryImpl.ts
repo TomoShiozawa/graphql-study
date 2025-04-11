@@ -10,7 +10,7 @@ export class SpecialMoveRepositoryImpl implements SpecialMoveRepository {
     return this.prismaClient.specialMove.count();
   }
 
-  public async getAll(after: Date): Promise<SpecialMoveModel[]> {
+  public async getAll(after?: Date): Promise<SpecialMoveModel[]> {
     const records = await this.prismaClient.specialMove.findMany({
       where: { createdAt: { gt: after } },
       include: {
