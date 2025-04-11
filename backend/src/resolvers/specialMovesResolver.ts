@@ -19,7 +19,7 @@ export const specialMoveQueryResolver: QueryResolvers = {
   allSpecialMoves: async (_, { after }, { prismaClient }) => {
     const specialMoveRepository = new SpecialMoveRepositoryImpl(prismaClient);
     const getAllUsecase = new GetAllUsecaseImpl(specialMoveRepository);
-    return await getAllUsecase.execute(after);
+    return await getAllUsecase.execute(after ?? null);
   },
 };
 

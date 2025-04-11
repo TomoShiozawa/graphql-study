@@ -4,7 +4,7 @@ import type { SpecialMoveInput } from "@/types/types.generated";
 export interface SpecialMoveRepository {
   getCount(): Promise<number>;
 
-  getAll(after: Date): Promise<SpecialMoveModel[]>;
+  getAll(after?: Date): Promise<SpecialMoveModel[]>;
 
   create(input: SpecialMoveInput): Promise<SpecialMoveModel>;
 
