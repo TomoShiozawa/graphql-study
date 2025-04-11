@@ -15,7 +15,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  DateTime: { input: any; output: any; }
+  DateTime: { input: string; output: string; }
 };
 
 /** キャラクター */
@@ -183,7 +183,7 @@ export type DeleteSpecialMoveMutation = { __typename?: 'Mutation', deleteSpecial
 export type NewSpecialMoveSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type NewSpecialMoveSubscription = { __typename?: 'Subscription', newSpecialMove: { __typename?: 'SpecialMove', name: string, createdAt: any, usedBy: Array<{ __typename?: 'Character', id: string, name: string }> } };
+export type NewSpecialMoveSubscription = { __typename?: 'Subscription', newSpecialMove: { __typename?: 'SpecialMove', name: string, createdAt: string, usedBy: Array<{ __typename?: 'Character', id: string, name: string }> } };
 
 
 export const GetCharactersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCharacters"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"charactersCount"}},{"kind":"Field","name":{"kind":"Name","value":"allCharacters"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"learnedSpecialMoves"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<GetCharactersQuery, GetCharactersQueryVariables>;
