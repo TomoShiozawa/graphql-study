@@ -1,7 +1,7 @@
 import type { SpecialMoveModel } from "@/types/models";
 import type { SpecialMoveInput } from "@/types/types.generated";
 
-export interface UpdateUsecase {
+export interface UpdateUseCase {
   execute: ({
     id,
     input,

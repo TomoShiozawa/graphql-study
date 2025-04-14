@@ -3,41 +3,41 @@ import type {
   MutationResolvers,
   QueryResolvers,
 } from "@/types/types.generated";
-import { CreateUsecaseImpl } from "@/usecases/characters/createUsecaseImpl";
-import { DeleteUsecaseImpl } from "@/usecases/characters/deleteUsecaseImpl";
-import { GetAllUsecaseImpl } from "@/usecases/characters/getAllUsecaseImpl";
-import { GetCountUsecaseImpl } from "@/usecases/characters/getCountUsecaseImpl";
-import { UpdateUsecaseImpl } from "@/usecases/characters/updateUsecaseImpl";
+import { CreateUseCaseImpl } from "@/useCases/characters/createUseCaseImpl";
+import { DeleteUseCaseImpl } from "@/useCases/characters/deleteUseCaseImpl";
+import { GetAllUseCaseImpl } from "@/useCases/characters/getAllUseCaseImpl";
+import { GetCountUseCaseImpl } from "@/useCases/characters/getCountUseCaseImpl";
+import { UpdateUseCaseImpl } from "@/useCases/characters/updateUseCaseImpl";
 
 export const characterQueryResolver: QueryResolvers = {
   charactersCount: async (_, __, { prismaClient }) => {
     const characterRepository = new CharacterRepositoryImpl(prismaClient);
-    const getCountUsecase = new GetCountUsecaseImpl(characterRepository);
-    return await getCountUsecase.execute();
+    const getCountUseCase = new GetCountUseCaseImpl(characterRepository);
+    return await getCountUseCase.execute();
   },
   allCharacters: async (_, __, { prismaClient }) => {
     const characterRepository = new CharacterRepositoryImpl(prismaClient);
-    const getAllUsecase = new GetAllUsecaseImpl(characterRepository);
-    return await getAllUsecase.execute();
+    const getAllUseCase = new GetAllUseCaseImpl(characterRepository);
+    return await getAllUseCase.execute();
   },
 };
 
 export const characterMutationResolver: MutationResolvers = {
   createCharacter: async (_, { input }, { prismaClient }) => {
     const characterRepository = new CharacterRepositoryImpl(prismaClient);
-    const createUsecase = new CreateUsecaseImpl(characterRepository);
-    return await createUsecase.execute({ input });
+    const createUseCase = new CreateUseCaseImpl(characterRepository);
+    return await createUseCase.execute({ input });
   },
 
   updateCharacter: async (_, { id, input }, { prismaClient }) => {
     const characterRepository = new CharacterRepositoryImpl(prismaClient);
-    const updateUsecase = new UpdateUsecaseImpl(characterRepository);
-    return await updateUsecase.execute({ id, input });
+    const updateUseCase = new UpdateUseCaseImpl(characterRepository);
+    return await updateUseCase.execute({ id, input });
   },
 
   deleteCharacter: async (_, { id }, { prismaClient }) => {
     const characterRepository = new CharacterRepositoryImpl(prismaClient);
-    const deleteUsecase = new DeleteUsecaseImpl(characterRepository);
-    return await deleteUsecase.execute(id);
+    const deleteUseCase = new DeleteUseCaseImpl(characterRepository);
+    return await deleteUseCase.execute(id);
   },
 };

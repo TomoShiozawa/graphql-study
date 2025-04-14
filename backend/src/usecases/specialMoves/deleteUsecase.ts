@@ -1,5 +1,5 @@
 import type { SpecialMoveModel } from "@/types/models";
 
-export interface DeleteUsecase {
+export interface DeleteUseCase {
   execute: (id: string) => Promise<SpecialMoveModel>;
 }

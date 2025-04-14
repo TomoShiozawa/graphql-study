@@ -1,8 +1,8 @@
 import type { CharacterRepository } from "@/repositories/characterRepository";
 import type { CharacterModel } from "@/types/models";
-import type { GetAllUsecase } from "./getAllUsecase";
+import type { GetAllUseCase } from "@/useCases/characters/getAllUseCase";
 
-export class GetAllUsecaseImpl implements GetAllUsecase {
+export class GetAllUseCaseImpl implements GetAllUseCase {
   constructor(private readonly characterRepository: CharacterRepository) {}
 
   async execute(): Promise<CharacterModel[]> {

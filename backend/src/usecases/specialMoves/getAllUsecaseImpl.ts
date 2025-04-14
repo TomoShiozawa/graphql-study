@@ -1,8 +1,8 @@
 import type { SpecialMoveModel } from "@/types/models";
+import type { GetAllUseCase } from "@/useCases/specialMoves/getAllUseCase";
 import type { SpecialMoveRepository } from "@repositories/specialMoveRepository";
-import type { GetAllUsecase } from "@usecases/specialMoves/getAllUsecase";
 
-export class GetAllUsecaseImpl implements GetAllUsecase {
+export class GetAllUseCaseImpl implements GetAllUseCase {
   constructor(private readonly specialMoveRepository: SpecialMoveRepository) {}
 
   public async execute(after: Date | null): Promise<SpecialMoveModel[]> {

@@ -1,7 +1,7 @@
+import type { GetCountUseCase } from "@/useCases/specialMoves/getCountUseCase";
 import type { SpecialMoveRepository } from "@repositories/specialMoveRepository";
-import type { GetCountUsecase } from "@usecases/specialMoves/getCountUsecase";
 
-export class GetCountUsecaseImpl implements GetCountUsecase {
+export class GetCountUseCaseImpl implements GetCountUseCase {
   constructor(private readonly specialMoveRepository: SpecialMoveRepository) {}
 
   public async execute() {

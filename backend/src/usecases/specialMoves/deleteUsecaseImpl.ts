@@ -1,8 +1,8 @@
 import type { SpecialMoveRepository } from "@/repositories/specialMoveRepository";
 import type { SpecialMoveModel } from "@/types/models";
-import type { DeleteUsecase } from "./deleteUsecase";
+import type { DeleteUseCase } from "@/useCases/specialMoves/deleteUseCase";
 
-export class DeleteUsecaseImpl implements DeleteUsecase {
+export class DeleteUseCaseImpl implements DeleteUseCase {
   constructor(private readonly specialMoveRepository: SpecialMoveRepository) {}
 
   public async execute(id: string): Promise<SpecialMoveModel> {

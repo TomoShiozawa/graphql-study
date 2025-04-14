@@ -4,30 +4,30 @@ import type {
   QueryResolvers,
   SubscriptionResolvers,
 } from "@/types/types.generated";
-import { CreateUsecaseImpl } from "@/usecases/specialMoves/createUsecaseImpl";
-import { DeleteUsecaseImpl } from "@/usecases/specialMoves/deleteUsecaseImpl";
-import { GetAllUsecaseImpl } from "@/usecases/specialMoves/getAllUsecaseImpl";
-import { GetCountUsecaseImpl } from "@/usecases/specialMoves/getCountUsecaseImpl";
-import { UpdateUsecaseImpl } from "@/usecases/specialMoves/updateUsecaseImpl";
+import { CreateUseCaseImpl } from "@/useCases/specialMoves/createUseCaseImpl";
+import { DeleteUseCaseImpl } from "@/useCases/specialMoves/deleteUseCaseImpl";
+import { GetAllUseCaseImpl } from "@/useCases/specialMoves/getAllUseCaseImpl";
+import { GetCountUseCaseImpl } from "@/useCases/specialMoves/getCountUseCaseImpl";
+import { UpdateUseCaseImpl } from "@/useCases/specialMoves/updateUseCaseImpl";
 
 export const specialMoveQueryResolver: QueryResolvers = {
   specialMovesCount: async (_, __, { prismaClient }) => {
     const specialMoveRepository = new SpecialMoveRepositoryImpl(prismaClient);
-    const getCountUsecase = new GetCountUsecaseImpl(specialMoveRepository);
-    return await getCountUsecase.execute();
+    const getCountUseCase = new GetCountUseCaseImpl(specialMoveRepository);
+    return await getCountUseCase.execute();
   },
   allSpecialMoves: async (_, { after }, { prismaClient }) => {
     const specialMoveRepository = new SpecialMoveRepositoryImpl(prismaClient);
-    const getAllUsecase = new GetAllUsecaseImpl(specialMoveRepository);
-    return await getAllUsecase.execute(after ?? null);
+    const getAllUseCase = new GetAllUseCaseImpl(specialMoveRepository);
+    return await getAllUseCase.execute(after ?? null);
   },
 };
 
 export const specialMoveMutationResolver: MutationResolvers = {
   createSpecialMove: async (_, { input }, { pubsub, prismaClient }) => {
     const specialMoveRepository = new SpecialMoveRepositoryImpl(prismaClient);
-    const createUsecase = new CreateUsecaseImpl(pubsub, specialMoveRepository);
-    return await createUsecase.execute({
+    const createUseCase = new CreateUseCaseImpl(pubsub, specialMoveRepository);
+    return await createUseCase.execute({
       pubsub,
       input,
     });
@@ -35,8 +35,8 @@ export const specialMoveMutationResolver: MutationResolvers = {
 
   updateSpecialMove: async (_, { id, input }, { prismaClient }) => {
     const specialMoveRepository = new SpecialMoveRepositoryImpl(prismaClient);
-    const updateUsecase = new UpdateUsecaseImpl(specialMoveRepository);
-    return await updateUsecase.execute({
+    const updateUseCase = new UpdateUseCaseImpl(specialMoveRepository);
+    return await updateUseCase.execute({
       id,
       input,
     });
@@ -44,8 +44,8 @@ export const specialMoveMutationResolver: MutationResolvers = {
 
   deleteSpecialMove: async (_, { id }, { prismaClient }) => {
     const specialMoveRepository = new SpecialMoveRepositoryImpl(prismaClient);
-    const deleteUsecase = new DeleteUsecaseImpl(specialMoveRepository);
-    return await deleteUsecase.execute(id);
+    const deleteUseCase = new DeleteUseCaseImpl(specialMoveRepository);
+    return await deleteUseCase.execute(id);
   },
 };
 

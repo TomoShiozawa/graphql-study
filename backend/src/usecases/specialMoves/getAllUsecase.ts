@@ -1,5 +1,5 @@
 import type { SpecialMoveModel } from "@/types/models";
 
-export interface GetAllUsecase {
+export interface GetAllUseCase {
   execute: (after: Date | null) => Promise<SpecialMoveModel[]>;
 }

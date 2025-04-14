@@ -1,3 +1,3 @@
-export interface GetCountUsecase {
+export interface GetCountUseCase {
   execute: () => Promise<number>;
 }
