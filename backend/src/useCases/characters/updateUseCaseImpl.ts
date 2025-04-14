@@ -1,7 +1,7 @@
-import type { CharacterRepository } from "@/repositories/characterRepository";
 import type { CharacterModel } from "@/types/models";
 import type { CharacterInput } from "@/types/types.generated";
-import type { UpdateUseCase } from "@/useCases/characters/updateUseCase";
+import type { CharacterRepository } from "@repositories/characterRepository";
+import type { UpdateUseCase } from "@useCases/characters/updateUseCase";
 
 export class UpdateUseCaseImpl implements UpdateUseCase {
   constructor(private readonly characterRepository: CharacterRepository) {}

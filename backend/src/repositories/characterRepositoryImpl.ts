@@ -46,8 +46,8 @@ export class CharacterRepositoryImpl implements CharacterRepository {
     });
 
     return {
+      ...record,
       id: record.id.toString(),
-      name: record.name,
       description: record.description ?? undefined,
       learnedSpecialMoves: record.learnedSpecialMoves.map(
         (learnedSpecialMove) => ({
@@ -75,8 +75,8 @@ export class CharacterRepositoryImpl implements CharacterRepository {
     });
 
     return {
+      ...record,
       id: record.id.toString(),
-      name: record.name,
       description: record.description ?? undefined,
       learnedSpecialMoves: record.learnedSpecialMoves.map(
         (learnedSpecialMove) => ({
@@ -96,8 +96,8 @@ export class CharacterRepositoryImpl implements CharacterRepository {
     });
 
     return {
+      ...record,
       id: record.id.toString(),
-      name: record.name,
       description: record.description ?? undefined,
       learnedSpecialMoves: record.learnedSpecialMoves.map(
         (learnedSpecialMove) => ({

@@ -1,6 +1,6 @@
-import type { SpecialMoveRepository } from "@/repositories/specialMoveRepository";
 import type { SpecialMoveModel } from "@/types/models";
-import type { DeleteUseCase } from "@/useCases/specialMoves/deleteUseCase";
+import type { SpecialMoveRepository } from "@repositories/specialMoveRepository";
+import type { DeleteUseCase } from "@useCases/specialMoves/deleteUseCase";
 
 export class DeleteUseCaseImpl implements DeleteUseCase {
   constructor(private readonly specialMoveRepository: SpecialMoveRepository) {}

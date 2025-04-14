@@ -3,6 +3,7 @@ export type SpecialMoveModel = {
   name: string;
   description?: string;
   usedBy: { id: string }[];
+  createdAt: Date;
 };
 
 export type CharacterModel = {
@@ -10,4 +11,5 @@ export type CharacterModel = {
   name: string;
   description?: string;
   learnedSpecialMoves: { id: string }[];
+  createdAt: Date;
 };

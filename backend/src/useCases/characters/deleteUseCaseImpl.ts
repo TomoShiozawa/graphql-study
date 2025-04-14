@@ -1,6 +1,6 @@
-import type { CharacterRepository } from "@/repositories/characterRepository";
 import type { CharacterModel } from "@/types/models";
-import type { DeleteUseCase } from "@/useCases/characters/deleteUseCase";
+import type { CharacterRepository } from "@repositories/characterRepository";
+import type { DeleteUseCase } from "@useCases/characters/deleteUseCase";
 
 export class DeleteUseCaseImpl implements DeleteUseCase {
   constructor(private readonly characterRepository: CharacterRepository) {}
