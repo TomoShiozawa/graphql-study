@@ -1,7 +1,7 @@
 import type { SpecialMoveModel } from "@/types/models";
 import type { SpecialMoveInput } from "@/types/types.generated";
-import type { CreateUseCase } from "@/useCases/specialMoves/createUseCase";
 import type { SpecialMoveRepository } from "@repositories/specialMoveRepository";
+import type { CreateUseCase } from "@useCases/specialMoves/createUseCase";
 import type { PubSub } from "graphql-subscriptions";
 
 export class CreateUseCaseImpl implements CreateUseCase {
