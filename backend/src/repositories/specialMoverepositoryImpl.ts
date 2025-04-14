@@ -46,8 +46,8 @@ export class SpecialMoveRepositoryImpl implements SpecialMoveRepository {
     });
 
     return {
+      ...record,
       id: record.id.toString(),
-      name: record.name,
       description: record.description ?? undefined,
       usedBy: record.usedBy.map((usedBy) => ({
         ...usedBy,
@@ -76,8 +76,8 @@ export class SpecialMoveRepositoryImpl implements SpecialMoveRepository {
     });
 
     return {
+      ...record,
       id: record.id.toString(),
-      name: record.name,
       description: record.description ?? undefined,
       usedBy: record.usedBy.map((usedBy) => ({
         ...usedBy,
@@ -95,8 +95,8 @@ export class SpecialMoveRepositoryImpl implements SpecialMoveRepository {
     });
 
     return {
+      ...record,
       id: record.id.toString(),
-      name: record.name,
       description: record.description ?? undefined,
       usedBy: record.usedBy.map((usedBy) => ({
         ...usedBy,
