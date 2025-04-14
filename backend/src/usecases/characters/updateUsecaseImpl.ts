@@ -1,15 +1,18 @@
 import type { CharacterRepository } from "@/repositories/characterRepository";
 import type { CharacterModel } from "@/types/models";
 import type { CharacterInput } from "@/types/types.generated";
-import type { UpdateUsecase } from "./updateUsecase";
+import type { UpdateUseCase } from "@/useCases/characters/updateUseCase";
 
-export class UpdateUsecaseImpl implements UpdateUsecase {
+export class UpdateUseCaseImpl implements UpdateUseCase {
   constructor(private readonly characterRepository: CharacterRepository) {}
 
   async execute({
     id,
     input,
-  }: { id: string; input: CharacterInput }): Promise<CharacterModel> {
+  }: {
+    id: string;
+    input: CharacterInput;
+  }): Promise<CharacterModel> {
     return await this.characterRepository.update(id, input);
   }
 }

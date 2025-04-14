@@ -1,8 +1,8 @@
 import type { CharacterRepository } from "@/repositories/characterRepository";
 import type { CharacterModel } from "@/types/models";
-import type { DeleteUsecase } from "./deleteUsecase";
+import type { DeleteUseCase } from "@/useCases/characters/deleteUseCase";
 
-export class DeleteUsecaseImpl implements DeleteUsecase {
+export class DeleteUseCaseImpl implements DeleteUseCase {
   constructor(private readonly characterRepository: CharacterRepository) {}
 
   async execute(id: string): Promise<CharacterModel> {

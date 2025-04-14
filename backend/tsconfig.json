@@ -27,8 +27,8 @@
       "@repositories/*": [
         "./src/repositories/*"
       ],
-      "@usecases/*": [
-        "./src/usecases/*"
+      "@useCases/*": [
+        "./src/useCases/*"
       ],
       "@resolvers/*": [
         "./src/resolvers/*"

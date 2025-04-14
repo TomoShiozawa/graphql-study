@@ -1,7 +1,7 @@
-import type { CharacterRepository } from "@/repositories/characterRepository";
-import type { GetCountUsecase } from "./getCountUsecase";
+import type { CharacterRepository } from "@repositories/characterRepository";
+import type { GetCountUseCase } from "@useCases/characters/getCountUseCase";
 
-export class GetCountUsecaseImpl implements GetCountUsecase {
+export class GetCountUseCaseImpl implements GetCountUseCase {
   constructor(private readonly characterRepository: CharacterRepository) {}
 
   async execute(): Promise<number> {

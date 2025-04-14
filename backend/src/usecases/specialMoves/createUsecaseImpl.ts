@@ -1,13 +1,13 @@
 import type { SpecialMoveModel } from "@/types/models";
 import type { SpecialMoveInput } from "@/types/types.generated";
+import type { CreateUseCase } from "@/useCases/specialMoves/createUseCase";
 import type { SpecialMoveRepository } from "@repositories/specialMoveRepository";
-import type { CreateUsecase } from "@usecases/specialMoves/createUsecase";
 import type { PubSub } from "graphql-subscriptions";
 
-export class CreateUsecaseImpl implements CreateUsecase {
+export class CreateUseCaseImpl implements CreateUseCase {
   constructor(
     private readonly pubsub: PubSub,
-    private readonly specialMoveRepository: SpecialMoveRepository,
+    private readonly specialMoveRepository: SpecialMoveRepository
   ) {}
 
   public async execute({
