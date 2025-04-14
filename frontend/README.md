@@ -1,50 +1,33 @@
-# React + TypeScript + Vite
+# Amazing GraphQL App
+## 環境構築
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- vscode のDevcontainerで開けばOK
+- バックエンドの起動が前提なので、バックエンドを起動しておく
+  - `bun start` バックエンドのコンテナで
+- `bun dev` フロントエンド起動
+  - ホットリロードが有効
 
-Currently, two official plugins are available:
+## 動作確認
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+ローカルホスト3000でアクセスできます
 
-## Expanding the ESLint configuration
+## 開発
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+開発中に利用できる諸々のスクリプトを用意してます
 
-- Configure the top-level `parserOptions` property like this:
+- 開発/ビルド
+  - `bun dev` : 開発サーバー起動
+  - `bun run build` : ビルド
+  - `bun preview` : ビルド結果確認
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+- GraphQLスキーマに合わせた型情報の生成
+  - バックエンドからスキーマを取得します、バックエンド起動が必要です
+  - `bun codegen`
+  - `bun codegen-watch` :　watchオプション付き
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- リンター・フォーマッター
+  - いずれも `src/`配下のソースに対してリンターを掛けます
+  - `bun check` : biome check実行
+  - `bun format` : biome format実行
+  - `bun lint` : biome lint実行
